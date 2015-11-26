@@ -1,0 +1,60 @@
+{
+  "name": "vscode-csscomb",
+  "displayName": "CSScomb",
+  "description": "VS Code plugin for CSScomb — CSS coding style formatter",
+  "version": "0.1.0",
+  "publisher": "mrmlnc",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^0.10.1"
+  },
+  "icon": "icon.png",
+  "author": {
+    "name": "Denis Malinochkin",
+    "url": "www.canonium.com"
+  },
+  "homepage": "https://github.com/mrmlnc/vscode-csscomb/blob/master/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mrmlnc/vscode-csscomb"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:cssComb"
+  ],
+  "main": "./lib/extension",
+  "contributes": {
+    "commands": [
+      {
+        "command": "cssComb",
+        "title": "CSScomb (CSS coding style formatter)"
+      }
+    ]
+  },
+  "devDependencies": {
+    "vscode": "0.10.x",
+    "xo": "^0.11.2"
+  },
+  "dependencies": {
+    "csscomb": "^3.1.8"
+  },
+  "scripts": {
+    "test": "xo"
+  },
+  "xo": {
+    "fix": true,
+    "rules": {
+      "arrow-parens": [
+        2,
+        "always"
+      ],
+      "object-curly-spacing": [
+        2,
+        "always"
+      ],
+      "space-before-function-paren": 0
+    }
+  }
+}
