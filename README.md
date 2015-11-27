@@ -1,6 +1,6 @@
 # VS Code plugin for CSScomb
 
-> VS Code plugin for CSScomb — CSS coding style formatter
+> VS Code plugin for [CSScomb](http://csscomb.com/) — CSS coding style formatter
 
 ## Install
 
