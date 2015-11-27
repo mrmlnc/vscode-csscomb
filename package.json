@@ -2,7 +2,7 @@
   "name": "vscode-csscomb",
   "displayName": "CSScomb",
   "description": "VS Code plugin for CSScomb — CSS coding style formatter",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "mrmlnc",
   "license": "MIT",
   "engines": {
@@ -22,16 +22,26 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:cssComb"
+    "onCommand:csscomb.processEditor"
   ],
   "main": "./lib/extension",
   "contributes": {
     "commands": [
       {
-        "command": "cssComb",
+        "command": "csscomb.processEditor",
         "title": "CSScomb (CSS coding style formatter)"
       }
-    ]
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "CSScomb configuration",
+      "properties": {
+        "csscomb.preset": {
+          "default": "csscomb",
+          "description": "One of the predefined configs (csscomb, yandex, zen) or custom config (object)."
+        }
+      }
+    }
   },
   "devDependencies": {
     "vscode": "0.10.x",

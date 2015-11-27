@@ -4,3 +4,4 @@ test/**
 .gitignore
 jsconfig.json
 vsc-extension-quickstart.md
+icon.png
