@@ -44,13 +44,14 @@
     }
   },
   "devDependencies": {
-    "vscode": "0.10.x",
-    "xo": "^0.11.2"
+    "vscode": "^0.11.1",
+    "xo": "^0.12.1"
   },
   "dependencies": {
     "csscomb": "^3.1.8"
   },
   "scripts": {
+    "postinstall": "node ./node_modules/vscode/bin/install",
     "test": "xo"
   },
   "xo": {
