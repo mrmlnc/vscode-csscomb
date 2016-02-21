@@ -2,7 +2,7 @@
   "name": "vscode-csscomb",
   "displayName": "CSScomb",
   "description": "VS Code plugin for CSScomb — CSS coding style formatter",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "publisher": "mrmlnc",
   "license": "MIT",
   "engines": {
