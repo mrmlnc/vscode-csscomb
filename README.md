@@ -26,6 +26,17 @@ For example:
 }
 ```
 
+## Keyboard shortcuts
+
+To add support for keyboard shortcuts, create a new rule in `File -> Preferences -> Keyboard Shortcuts`:
+
+```json
+{
+  "key": "ctrl+shift+c",
+  "command": "csscomb.processEditor"
+}
+```
+
 ## Custom configuration
 
 Custom configuration is fun and simple: just put `.csscomb.json` file in the project root.
