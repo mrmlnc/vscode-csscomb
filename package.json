@@ -43,9 +43,9 @@
       }
     },
     "keybindings": [{
-        "command": "csscomb.processEditor",
-        "key": "shift+alt+f",
-        "when": "editorTextFocus"
+      "command": "csscomb.processEditor",
+      "key": "shift+alt+f",
+      "when": "editorTextFocus"
     }]
   },
   "devDependencies": {
