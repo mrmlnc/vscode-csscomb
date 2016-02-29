@@ -43,6 +43,10 @@ Custom configuration is fun and simple: just put `.csscomb.json` file in the pro
 
 You can read more about available options [in docs](https://github.com/csscomb/csscomb.js/blob/master/doc/options.md).
 
+## Changelog
+
+See the [Releases section of our GitHub project](https://github.com/mrmlnc/vscode-csscomb/releases) for changelogs for each release version.
+
 ## License
 
 This software is released under the terms of the MIT license.
