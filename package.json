@@ -41,7 +41,12 @@
           "description": "One of the predefined configs (csscomb, yandex, zen) or custom config (object)."
         }
       }
-    }
+    },
+    "keybindings": [{
+        "command": "csscomb.processEditor",
+        "key": "shift+alt+f",
+        "when": "editorTextFocus"
+    }]
   },
   "devDependencies": {
     "vscode": "^0.11.1",
