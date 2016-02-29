@@ -28,7 +28,7 @@ For example:
 
 ## Keyboard shortcuts
 
-To add support for keyboard shortcuts, create a new rule in `File -> Preferences -> Keyboard Shortcuts`:
+For changes keyboard shortcuts, create a new rule in `File -> Preferences -> Keyboard Shortcuts`:
 
 ```json
 {
