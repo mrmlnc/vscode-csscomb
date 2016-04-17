@@ -39,7 +39,7 @@ For changes keyboard shortcuts, create a new rule in `File -> Preferences -> Key
 
 ## Custom configuration
 
-Custom configuration is fun and simple: just put `.csscomb.json` file in the project root.
+Custom configuration is fun and simple: just put `.csscomb.json` file in the project root or your `HOME` directory.
 
 You can read more about available options [in docs](https://github.com/csscomb/csscomb.js/blob/master/doc/options.md).
 
