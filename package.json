@@ -26,12 +26,10 @@
   ],
   "main": "./lib/extension",
   "contributes": {
-    "commands": [
-      {
-        "command": "csscomb.processEditor",
-        "title": "CSScomb (CSS coding style formatter)"
-      }
-    ],
+    "commands": [{
+      "command": "csscomb.processEditor",
+      "title": "CSScomb (CSS coding style formatter)"
+    }],
     "configuration": {
       "type": "object",
       "title": "CSScomb configuration",
@@ -49,8 +47,8 @@
     }]
   },
   "devDependencies": {
-    "vscode": "^0.11.1",
-    "xo": "^0.12.1"
+    "vscode": "^0.11.10",
+    "xo": "^0.14.0"
   },
   "dependencies": {
     "csscomb": "^3.1.8"
@@ -62,15 +60,10 @@
   "xo": {
     "fix": true,
     "rules": {
-      "arrow-parens": [
-        2,
-        "always"
-      ],
-      "object-curly-spacing": [
-        2,
-        "always"
-      ],
-      "space-before-function-paren": 0
+      "arrow-parens": [2, "always"],
+      "object-curly-spacing": [2, "always"],
+      "babel/object-curly-spacing": 0,
+      "space-before-function-paren": [2, "never"]
     }
   }
 }
