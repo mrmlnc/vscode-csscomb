@@ -53,14 +53,14 @@ function useComb(document, config) {
 	const comb = new Comb();
 	comb.configure(config);
 
-	// For VS Code API: Sass === Scss
-	const syntax = (document.languageId === 'sass') ? 'scss' : document.lang;
+	const syntax = document.languageId || document._languageId;
 
 	try {
 		return comb.processString(document.getText(), { syntax: syntax });
 	} catch (err) {
+		// For VS Code API: Sass === Scss
 		if (err.syntax === 'sass') {
-			return comb.processString(document.getText(), { syntax: 'sass' });
+			return comb.processString(document.getText(), { syntax: 'scss' });
 		}
 
 		vscode.window.showErrorMessage(err);
