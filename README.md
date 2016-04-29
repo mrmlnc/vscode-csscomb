@@ -12,12 +12,14 @@ Press `F1` and run the command named `CSScomb`. Currently the following work fin
 
 ## Supported settings
 
- * `csscomb.preset` {String|Object} — config's name. Should be one of the following: `csscomb` (*default*), `zen`, `yandex` or an object containing custom configuration.
+  * `csscomb.preset` {Object|String} — config's name. Should be one of the following: `csscomb` (*default*), `zen`, `yandex` or an object containing custom configuration.
+  * `csscomb.autoFormatOnSave` {Boolean} — Auto format on save. *Default*: `false`.
 
 For example:
 
 ```json
 {
+  "csscomb.autoFormatOnSave": true,
   "csscomb.preset": "yandex",
   "csscomb.preset": {
     "remove-empty-rulesets": true,

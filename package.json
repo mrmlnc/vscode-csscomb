@@ -22,9 +22,13 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:csscomb.processEditor"
+    "onCommand:csscomb.processEditor",
+    "onLanguage:css",
+    "onLanguage:less",
+    "onLanguage:sass",
+    "onLanguage:scss"
   ],
-  "main": "./lib/extension",
+  "main": "./extension",
   "contributes": {
     "commands": [{
       "command": "csscomb.processEditor",
@@ -35,8 +39,14 @@
       "title": "CSScomb configuration",
       "properties": {
         "csscomb.preset": {
+          "type": ["object", "string"],
           "default": "csscomb",
           "description": "One of the predefined configs (csscomb, yandex, zen) or custom config (object)."
+        },
+        "csscomb.autoFormatOnSave": {
+            "type": "boolean",
+            "default": false,
+            "description": "Auto format on save"
         }
       }
     },
@@ -51,6 +61,7 @@
     "xo": "^0.14.0"
   },
   "dependencies": {
+    "co": "^4.6.0",
     "csscomb": "^3.1.8"
   },
   "scripts": {
@@ -58,12 +69,11 @@
     "test": "xo"
   },
   "xo": {
-    "fix": true,
     "rules": {
-      "arrow-parens": [2, "always"],
-      "object-curly-spacing": [2, "always"],
-      "babel/object-curly-spacing": 0,
-      "space-before-function-paren": [2, "never"]
+        "arrow-parens": [2, "always"],
+        "object-curly-spacing": [2, "always"],
+        "babel/object-curly-spacing": 0,
+        "space-before-function-paren": [2, "never"]
     }
   }
 }
