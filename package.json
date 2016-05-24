@@ -44,9 +44,9 @@
           "description": "One of the predefined configs (csscomb, yandex, zen) or custom config (object)."
         },
         "csscomb.autoFormatOnSave": {
-            "type": "boolean",
-            "default": false,
-            "description": "Auto format on save"
+          "type": "boolean",
+          "default": false,
+          "description": "Auto format on save"
         }
       }
     },
