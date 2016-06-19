@@ -37,8 +37,8 @@ function getConfig(fileName) {
 	});
 }
 
-function isSupportedFile(ext) {
-	return /(css|less|sass|scss)/.test(ext);
+function isSupportedSyntax(ext) {
+	return /(css|less|scss|sass|sass-indented)/.test(ext);
 }
 
 function useComb(document, config) {
@@ -53,7 +53,10 @@ function useComb(document, config) {
 	const comb = new Comb();
 	comb.configure(config);
 
-	const syntax = document.languageId || document._languageId;
+	let syntax = document.languageId || document._languageId;
+	if (syntax === 'sass-indented') {
+		syntax = 'sass';
+	}
 
 	try {
 		return comb.processString(document.getText(), { syntax: syntax });
@@ -70,8 +73,8 @@ function useComb(document, config) {
 function init(document, onDidSaveStatus) {
 	let combConfig;
 
-	if (!isSupportedFile(document.languageId)) {
-		console.error('Cannot execute CSScomb because there is not style files.');
+	if (!isSupportedSyntax(document.languageId)) {
+		console.error('Cannot execute CSScomb because there is not style files. Supported: LESS, SCSS, SASS and CSS.');
 		return;
 	}
 
