@@ -77,7 +77,7 @@ function init(document, onDidSaveStatus) {
 
 	co(function* () {
 		const workspaceConfigStatus = yield searchWorkspaceConfig();
-		if (workspaceConfigStatus) {
+		if (workspaceConfigStatus && workspaceConfigStatus.length) {
 			combConfig = yield getConfig(workspaceConfigStatus[0]);
 			return useComb(document, combConfig);
 		}
