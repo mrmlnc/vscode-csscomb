@@ -64,10 +64,13 @@
   },
   "xo": {
     "rules": {
-        "arrow-parens": [2, "always"],
-        "object-curly-spacing": [2, "always"],
-        "babel/object-curly-spacing": 0,
-        "space-before-function-paren": [2, "never"]
+      "no-var": 2,
+      "prefer-const": [2, { "destructuring": "all" }],
+      "arrow-parens": [2, "always"],
+      "object-curly-spacing": [2, "always"],
+      "babel/object-curly-spacing": 0,
+      "space-before-function-paren": [2, "never"],
+      "generator-star-spacing": [2, "after"]
     }
   }
 }
