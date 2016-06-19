@@ -1,10 +1,14 @@
 {
 	"compilerOptions": {
+		"target": "es6",
 		"module": "commonjs",
-		"target": "ES5",
-		"noLib": true
+		"allowSyntheticDefaultImports": true
 	},
 	"exclude": [
-		"node_modules"
+		"node_modules",
+		"bower_components",
+		"jspm_packages",
+		"tmp",
+		"temp"
 	]
 }
