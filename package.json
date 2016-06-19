@@ -52,8 +52,8 @@
     }
   },
   "devDependencies": {
-    "vscode": "^0.11.10",
-    "xo": "^0.14.0"
+    "vscode": "^0.11.13",
+    "xo": "^0.16.0"
   },
   "dependencies": {
     "co": "^4.6.0",
