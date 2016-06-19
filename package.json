@@ -49,12 +49,7 @@
           "description": "Auto format on save"
         }
       }
-    },
-    "keybindings": [{
-      "command": "csscomb.processEditor",
-      "key": "shift+alt+f",
-      "when": "editorTextFocus"
-    }]
+    }
   },
   "devDependencies": {
     "vscode": "^0.11.10",
