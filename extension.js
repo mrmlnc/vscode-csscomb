@@ -54,6 +54,10 @@ function useComb(document, config) {
 	comb.configure(config);
 
 	let syntax = document.languageId || document._languageId;
+	if (syntax === 'sass') {
+		syntax = 'scss';
+	}
+
 	if (syntax === 'sass-indented') {
 		syntax = 'sass';
 	}
@@ -61,11 +65,6 @@ function useComb(document, config) {
 	try {
 		return comb.processString(document.getText(), { syntax: syntax });
 	} catch (err) {
-		// For VS Code API: Sass === Scss
-		if (err.syntax === 'sass') {
-			return comb.processString(document.getText(), { syntax: 'scss' });
-		}
-
 		vscode.window.showErrorMessage(err);
 	}
 }
