@@ -53,12 +53,8 @@ function useComb(document, config) {
 	const comb = new Comb();
 	comb.configure(config);
 
-	let syntax = document.languageId || document._languageId;
-	if (syntax === 'sass') {
-		syntax = 'scss';
-	}
-
-	if (syntax === 'sass-indented') {
+	let syntax = document.languageId;
+	if (/sass/.test(syntax)) {
 		syntax = 'sass';
 	}
 
