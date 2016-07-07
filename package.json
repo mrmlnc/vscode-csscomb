@@ -18,6 +18,13 @@
     "type": "git",
     "url": "https://github.com/mrmlnc/vscode-csscomb"
   },
+  "keywords": [
+    "CSScomb",
+    "CSS",
+    "Less",
+    "Sass",
+    "SCSS"
+  ],
   "categories": [
     "Other"
   ],
