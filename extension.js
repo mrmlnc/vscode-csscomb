@@ -4,6 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const userHome = require('os').homedir();
 const co = require('co');
+const multimatch = require('multimatch');
 const vscode = require('vscode');
 const Comb = require('csscomb');
 
@@ -130,8 +131,15 @@ function activate(context) {
 	context.subscriptions.push(processEditor);
 
 	const onSave = vscode.workspace.onDidSaveTextDocument((document) => {
-		const onDidSave = vscode.workspace.getConfiguration('csscomb').autoFormatOnSave;
-		if (onDidSave) {
+		const settings = vscode.workspace.getConfiguration('csscomb');
+		if (settings.autoFormatOnSave) {
+			if (settings.ignoreFilesOnSave.length) {
+				const fsPath = path.relative(vscode.workspace.rootPath, document.fileName);
+				if (multimatch([fsPath], settings.ignoreFilesOnSave).length !== 0) {
+					return;
+				}
+			}
+
 			init(document, true);
 		}
 	});

@@ -50,6 +50,11 @@
           "default": "csscomb",
           "description": "One of the predefined configs (csscomb, yandex, zen) or custom config (object)."
         },
+        "csscomb.ignoreFilesOnSave": {
+          "type": "array",
+          "default": [],
+          "description": "An optional array of glob-patterns to ignore files on save."
+        },
         "csscomb.autoFormatOnSave": {
           "type": "boolean",
           "default": false,
@@ -64,7 +69,8 @@
   },
   "dependencies": {
     "co": "^4.6.0",
-    "csscomb": "^3.1.8"
+    "csscomb": "^3.1.8",
+    "multimatch": "^2.1.0"
   },
   "scripts": {
     "test": "xo"

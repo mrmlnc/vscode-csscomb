@@ -12,8 +12,27 @@ Press `F1` and run the command named `CSScomb`. Currently the following work fin
 
 ## Supported settings
 
-  * `csscomb.preset` {Object|String} — config's name. Should be one of the following: `csscomb` (*default*), `zen`, `yandex` or an object containing custom configuration.
-  * `csscomb.autoFormatOnSave` {Boolean} — Auto format on save. *Default*: `false`.
+**csscomb.preset**
+
+  * Type: `Object` or `String`
+  * Defaut: `csscomb`
+
+Config's name. Should be one of the following: `csscomb` (*default*), `zen`, `yandex` or an object containing custom configuration.
+
+**csscomb.autoFormatOnSave**
+
+  * Type: `Boolean`
+  * Default: `false`
+
+Auto format on save. *Default*: `false`.
+
+**csscomb.ignoreFilesOnSave**
+
+  * Type: `Array`
+  * Default: `[]`
+  * Example: `['variables.less`, 'mixins/**/*']`
+
+An optional array of glob-patterns to ignore files on save.
 
 For example:
 
