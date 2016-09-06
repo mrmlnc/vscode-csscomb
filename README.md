@@ -1,14 +1,24 @@
-# VS Code plugin for CSScomb
+# vscode-csscomb
 
 > VS Code plugin for [CSScomb](http://csscomb.com/) — CSS coding style formatter
 
 ## Install
 
-To install, press `F1` and select `Extensions: Install Extensions` and then search for and select `CSScomb`.
+  * Press <kbd>F1</kbd> and select `Extensions: Install Extensions`.
+  * Search for and select `csscomb`.
+
+See the [extension installation guide](https://code.visualstudio.com/docs/editor/extension-gallery) for details.
 
 ## Usage
 
-Press `F1` and run the command named `CSScomb`. Currently the following work fine: `css`, `less`, `sass` and `scss`.
+Press <kbd>F1</kbd> and run the command named `CSSComb`.
+
+## Supported languages
+
+  * CSS
+  * Less
+  * SCSS
+  * Sass
 
 ## Supported settings
 
