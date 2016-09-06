@@ -1,1 +1,11 @@
-node_modules
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Dependency directory
+node_modules/
+
+# Compiled and tempory files
+.tmp/
+out/

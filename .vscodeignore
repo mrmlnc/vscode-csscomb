@@ -1,6 +1,8 @@
 .vscode/**
 typings/**
 test/**
+lib/**/*.spec.js
+.editorconfig
 .gitignore
+.travis.yml
 jsconfig.json
-vsc-extension-quickstart.md
