@@ -6,7 +6,8 @@ const userHome = require('os').homedir();
 const co = require('co');
 const multimatch = require('multimatch');
 const vscode = require('vscode');
-const Comb = require('csscomb');
+
+let Comb = null;
 
 function searchGlobalConfig() {
 	return new Promise((resolve) => {
@@ -124,6 +125,9 @@ function init(document, onDidSaveStatus) {
 }
 
 function activate(context) {
+	const version = vscode.workspace.getConfiguration('csscomb').useLegacyCore ? '' : '-next';
+	Comb = require(`csscomb${version}`);
+
 	const processEditor = vscode.commands.registerTextEditorCommand('csscomb.processEditor', (textEditor) => {
 		init(textEditor.document, false);
 	});

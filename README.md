@@ -34,7 +34,7 @@ Config's name. Should be one of the following: `csscomb` (*default*), `zen`, `ya
   * Type: `Boolean`
   * Default: `false`
 
-Auto format on save. *Default*: `false`.
+Auto format on save.
 
 **csscomb.ignoreFilesOnSave**
 
@@ -43,6 +43,13 @@ Auto format on save. *Default*: `false`.
   * Example: `['variables.less`, 'mixins/**/*']`
 
 An optional array of glob-patterns to ignore files on save.
+
+**csscomb.useLegacyCore**
+
+  * Type: `Boolean`
+  * Default: `false`
+
+Use CSScomb **v3.1.8**.
 
 For example:
 

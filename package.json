@@ -2,7 +2,7 @@
   "name": "vscode-csscomb",
   "displayName": "CSScomb",
   "description": "VS Code plugin for CSScomb — CSS coding style formatter",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "publisher": "mrmlnc",
   "license": "MIT",
   "engines": {
@@ -59,6 +59,11 @@
           "type": "boolean",
           "default": false,
           "description": "Auto format on save"
+        },
+        "csscomb.useLegacyCore": {
+          "type": "boolean",
+          "default": false,
+          "description": "Use CSScomb 3.x.x"
         }
       }
     }
@@ -69,7 +74,8 @@
   },
   "dependencies": {
     "co": "4.6.0",
-    "csscomb": "4.0.0-alpha",
+    "csscomb-next": "https://github.com/mrmlnc/csscomb.js/tarball/d3929655199579fb3ee50da23186e630480cb1fe",
+    "csscomb": "^3.1.8",
     "multimatch": "2.1.0"
   },
   "scripts": {
