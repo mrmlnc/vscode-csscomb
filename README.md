@@ -40,7 +40,7 @@ Auto format on save.
 
   * Type: `Array`
   * Default: `[]`
-  * Example: `['variables.less`, 'mixins/**/*']`
+  * Example: `['variables.less', 'mixins/**/*']`
 
 An optional array of glob-patterns to ignore files on save.
 
