@@ -143,7 +143,7 @@ async function useComb(document: vscode.TextDocument, selection: vscode.Selectio
 
 	let range;
 	let text;
-	if (!selection || selection.isEmpty) {
+	if (!selection || (selection && selection.isEmpty)) {
 		const lastLine = document.lineAt(document.lineCount - 1);
 		const start = new vscode.Position(0, 0);
 		const end = new vscode.Position(document.lineCount - 1, lastLine.text.length);
