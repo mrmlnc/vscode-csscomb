@@ -1,7 +1,13 @@
 .test {
-  display: none;
-  margin-bottom: .5em;
-  padding: 0;
-  text-align: center;
-  text-transform: none;
+	margin-bottom: 0.5em;
+	display: none;
+	padding: 0em;
+
+		text-transform: none;
+
+	text-align: center;
+}
+
+.remove-me {
+
 }
