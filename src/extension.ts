@@ -156,7 +156,7 @@ async function useComb(document: vscode.TextDocument, selection: vscode.Selectio
 	}
 
 	try {
-		const result = comb.processString(document.getText(), { syntax });
+		const result = comb.processString(text, { syntax });
 
 		return {
 			css: result,
