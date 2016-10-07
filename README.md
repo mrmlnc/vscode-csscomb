@@ -29,7 +29,7 @@ Press <kbd>F1</kbd> and run the command named `CSSComb`.
 
 Config's name. Should be one of the following: `csscomb` (*default*), `zen`, `yandex` or an object containing custom configuration.
 
-**csscomb.autoFormatOnSave**
+**csscomb.formatOnSave**
 
   * Type: `Boolean`
   * Default: `false`
@@ -44,12 +44,12 @@ Auto format on save.
 
 An optional array of glob-patterns to ignore files on save.
 
-**csscomb.useLegacyCore**
+**csscomb.useLatestCore**
 
   * Type: `Boolean`
   * Default: `false`
 
-Use CSScomb **v3.1.8**.
+Use CSScomb **v4.0.0-alpha**.
 
 For example:
 
@@ -71,7 +71,7 @@ For changes keyboard shortcuts, create a new rule in `File -> Preferences -> Key
 ```json
 {
   "key": "ctrl+shift+c",
-  "command": "csscomb.processEditor"
+  "command": "csscomb.execute"
 }
 ```
 

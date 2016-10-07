@@ -6,6 +6,5 @@ npm-debug.log*
 # Dependency directory
 node_modules/
 
-# Compiled and tempory files
-.tmp/
+# Build directory
 out/
