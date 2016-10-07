@@ -187,8 +187,8 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	const onSave = vscode.workspace.onWillSaveTextDocument((event) => {
-		// Skip formatting code without Editor configuration
-		if (!editorConfiguration || !editorConfiguration.formatOnSave) {
+		// Skip the formatting code without Editor configuration or if file not supported
+		if (!editorConfiguration || !editorConfiguration.formatOnSave || !isSupportedSyntax(event.document)) {
 			return;
 		}
 
