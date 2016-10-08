@@ -27,7 +27,6 @@ interface IResult {
 // "global" variables
 const osHomeDir = os.homedir();
 let Comb;
-let combVersion = '';
 let combConfig: ICombConfiguration;
 
 let editorConfiguration: IConfiguration;
@@ -40,13 +39,7 @@ let output: vscode.OutputChannel;
  */
 function requireCore(config: IConfiguration): void {
 	const moduleVersion = config.useLatestCore ? '-next' : '';
-
-	if (combVersion !== moduleVersion) {
-		delete require.cache[require.resolve(`csscomb${combVersion}`)];
-	}
-
 	Comb = require(`csscomb${moduleVersion}`);
-	combVersion = moduleVersion;
 }
 
 /**
@@ -156,7 +149,7 @@ async function useComb(document: vscode.TextDocument, selection: vscode.Selectio
 	}
 
 	try {
-		const result = comb.processString(text, { syntax });
+		const result = await comb.processString(text, { syntax });
 
 		return {
 			css: result,
