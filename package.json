@@ -76,7 +76,7 @@
   },
   "devDependencies": {
     "vscode": "^0.11.13",
-    "xo": "^0.16.0"
+    "xo": "^0.17.0"
   },
   "dependencies": {
     "co": "4.6.0",
