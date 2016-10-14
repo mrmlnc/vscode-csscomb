@@ -1,12 +1,12 @@
 {
   "name": "vscode-csscomb",
   "displayName": "CSScomb",
-  "description": "VS Code plugin for CSScomb — CSS coding style formatter",
-  "version": "2.2.0",
+  "description": "Coding style formatter for CSS, Less, SCSS or Sass.",
+  "version": "3.0.0",
   "publisher": "mrmlnc",
   "license": "MIT",
   "engines": {
-    "vscode": "^1.4.0"
+    "vscode": "^1.6.0"
   },
   "icon": "icon.png",
   "author": {
@@ -29,17 +29,17 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:csscomb.processEditor",
+    "onCommand:csscomb.execute",
     "onLanguage:css",
     "onLanguage:less",
     "onLanguage:sass",
     "onLanguage:scss"
   ],
-  "main": "./extension",
+  "main": "./out/extension.js",
   "contributes": {
     "commands": [{
-      "command": "csscomb.processEditor",
-      "title": "CSScomb (CSS coding style formatter)"
+      "command": "csscomb.execute",
+      "title": "CSSComb: Format styles"
     }],
     "configuration": {
       "type": "object",
@@ -55,15 +55,15 @@
           "default": [],
           "description": "An optional array of glob-patterns to ignore files on save."
         },
-        "csscomb.autoFormatOnSave": {
+        "csscomb.formatOnSave": {
           "type": "boolean",
           "default": false,
-          "description": "Auto format on save"
+          "description": "Auto format on save."
         },
-        "csscomb.useLegacyCore": {
+        "csscomb.useLatestCore": {
           "type": "boolean",
           "default": false,
-          "description": "Use CSScomb 3.x.x"
+          "description": "Use CSScomb 4.0.0-alpha."
         }
       }
     },
@@ -75,29 +75,13 @@
     ]
   },
   "devDependencies": {
-    "vscode": "^0.11.13",
-    "xo": "^0.16.0"
+    "vscode": "^1.0.0",
+    "typescript": "^2.0.3",
+    "tslint": "^3.15.1"
   },
   "dependencies": {
-    "co": "4.6.0",
     "csscomb-next": "https://github.com/mrmlnc/csscomb.js/tarball/d3929655199579fb3ee50da23186e630480cb1fe",
-    "csscomb": "^3.1.8",
+    "csscomb": "3.1.8",
     "multimatch": "2.1.0"
-  },
-  "scripts": {
-    "test": "xo"
-  },
-  "xo": {
-    "rules": {
-      "no-var": 2,
-      "prefer-const": [2, { "destructuring": "all" }],
-      "space-before-function-paren": [2, "never"],
-      "babel/arrow-parens": [2, "always"],
-      "babel/object-curly-spacing": [2, "always"],
-      "babel/generator-star-spacing": [2, "after"]
-    },
-    "envs": [
-      "node"
-    ]
   }
 }
