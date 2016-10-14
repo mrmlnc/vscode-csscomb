@@ -55,7 +55,7 @@ For example:
 
 ```json
 {
-  "csscomb.autoFormatOnSave": true,
+  "csscomb.formatOnSave": true,
   "csscomb.preset": "yandex",
   "csscomb.preset": {
     "remove-empty-rulesets": true,
