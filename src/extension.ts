@@ -63,9 +63,9 @@ function readConfig(filepath: string): Promise<any> {
  *
  * @param {IConfiguration} config
  */
-async function requireConfig(config: IConfiguration): Promise<ICombConfiguration> {
+async function requireConfig(): Promise<ICombConfiguration> {
 	// Update editorConfiguration
-	editorConfiguration = vscode.workspace.getConfiguration().get<IConfiguration>('csscomb');
+	const editorConfiguration = vscode.workspace.getConfiguration().get<IConfiguration>('csscomb');
 
 	// Check workspace configuration
 	const workspaceConfigFinds = await vscode.workspace.findFiles('**/*csscomb.json', '**∕node_modules∕**', 1);
@@ -82,7 +82,7 @@ async function requireConfig(config: IConfiguration): Promise<ICombConfiguration
 		return;
 	}
 
-	combConfig = <ICombConfiguration>config.preset;
+	combConfig = <ICombConfiguration>editorConfiguration.preset;
 }
 
 /**
@@ -112,7 +112,7 @@ async function useComb(document: vscode.TextDocument, selection: vscode.Selectio
 	await requireCore(editorConfiguration);
 
 	if (!combConfig) {
-		await requireConfig(editorConfiguration);
+		await requireConfig();
 	}
 
 	// If configuration is broken then show error and use standard configuration
@@ -217,11 +217,11 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// Update configuration only if configuration file was is changed
 	const workspaceWatcher = vscode.workspace.createFileSystemWatcher('**/*csscomb.json');
-	workspaceWatcher.onDidCreate(() => requireConfig(editorConfiguration));
-	workspaceWatcher.onDidDelete(() => requireConfig(editorConfiguration));
-	workspaceWatcher.onDidChange(() => requireConfig(editorConfiguration));
+	workspaceWatcher.onDidCreate(() => requireConfig());
+	workspaceWatcher.onDidDelete(() => requireConfig());
+	workspaceWatcher.onDidChange(() => requireConfig());
 
-	const configurationWatcher = vscode.workspace.onDidChangeConfiguration(() => requireConfig(editorConfiguration));
+	const configurationWatcher = vscode.workspace.onDidChangeConfiguration(() => requireConfig());
 
 	// Subscriptions
 	context.subscriptions.push(command);
