@@ -25,9 +25,9 @@ Press <kbd>F1</kbd> and run the command named `CSSComb`.
 **csscomb.preset**
 
   * Type: `Object` or `String`
-  * Defaut: `csscomb`
+  * Defaut: `{}`
 
-Config's name. Should be one of the following: `csscomb` (*default*), `zen`, `yandex` or an object containing custom configuration.
+Config's name. Should be one of the following: `csscomb`, `zen`, `yandex` or an object containing custom configuration.
 
 **csscomb.formatOnSave**
 
