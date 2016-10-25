@@ -5,6 +5,7 @@ import * as os from 'os';
 
 import * as vscode from 'vscode';
 import * as multimatch from 'multimatch';
+import * as detectIndent from 'detect-indent';
 
 import * as fs from './lib/fs';
 
@@ -120,7 +121,7 @@ function searchEmbeddedStyles(document: vscode.TextDocument): { indent: string, 
 		pos--;
 	}
 
-	indent += editorSettings.insertSpaces ? ' '.repeat(<number>editorSettings.tabSize) : '\t';
+	indent += detectIndent(text).indent;
 
 	return {
 		indent,
@@ -191,7 +192,7 @@ async function useComb(document: vscode.TextDocument, selection: vscode.Selectio
 	try {
 		let result = await comb.processString(text, { syntax });
 
-		if (syntax === 'html' && editorConfiguration.supportEmbeddedStyles && Object.keys(combConfig).length !== 0) {
+		if (embeddedRange && editorConfiguration.supportEmbeddedStyles && Object.keys(combConfig).length !== 0) {
 			result = result.split('\n').map((x, index) => {
 				if (index !== 0 && x !== '') {
 					return embeddedRange.indent + x;

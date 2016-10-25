@@ -87,6 +87,7 @@
   "dependencies": {
     "csscomb-next": "https://github.com/mrmlnc/csscomb.js/tarball/d3929655199579fb3ee50da23186e630480cb1fe",
     "csscomb": "3.1.8",
-    "multimatch": "2.1.0"
+    "multimatch": "2.1.0",
+    "detect-indent": "5.0.0"
   }
 }
