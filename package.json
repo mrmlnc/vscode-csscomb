@@ -35,7 +35,7 @@
     "onLanguage:sass",
     "onLanguage:scss"
   ],
-  "main": "./out/extension.js",
+  "main": "./out/extension",
   "contributes": {
     "commands": [{
       "command": "csscomb.execute",
@@ -54,6 +54,11 @@
           "type": "array",
           "default": [],
           "description": "An optional array of glob-patterns to ignore files on save."
+        },
+        "csscomb.supportEmbeddedStyles": {
+          "type": "boolean",
+          "default": true,
+          "description": "Support embedded CSS into HTML."
         },
         "csscomb.formatOnSave": {
           "type": "boolean",

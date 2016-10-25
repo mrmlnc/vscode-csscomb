@@ -3,14 +3,15 @@
 import * as path from 'path';
 import * as os from 'os';
 
-import * as multimatch from 'multimatch';
 import * as vscode from 'vscode';
+import * as multimatch from 'multimatch';
 
 import * as fs from './lib/fs';
 
 interface IConfiguration {
 	preset: string | Object;
 	ignoreFilesOnSave: string[];
+	supportEmbeddedStyles: boolean;
 	formatOnSave: boolean;
 	useLatestCore: boolean;
 }
@@ -29,6 +30,7 @@ const osHomeDir = os.homedir();
 let Comb;
 let combConfig: ICombConfiguration;
 
+let editorSettings: vscode.TextEditorOptions;
 let editorConfiguration: IConfiguration;
 let output: vscode.OutputChannel;
 
@@ -65,7 +67,7 @@ function readConfig(filepath: string): Promise<any> {
  */
 async function requireConfig(): Promise<ICombConfiguration> {
 	// Update editorConfiguration
-	const editorConfiguration = vscode.workspace.getConfiguration().get<IConfiguration>('csscomb');
+	editorConfiguration = vscode.workspace.getConfiguration().get<IConfiguration>('csscomb');
 
 	// Check workspace configuration
 	const workspaceConfigFinds = await vscode.workspace.findFiles('**/*csscomb.json', '**∕node_modules∕**', 1);
@@ -95,6 +97,37 @@ function isSupportedSyntax(document: vscode.TextDocument): boolean {
 	return /(css|less|scss|sass)/.test(document.languageId);
 }
 
+function searchEmbeddedStyles(document: vscode.TextDocument): { indent: string, range: vscode.Range } {
+	if (document.languageId !== 'html') {
+		return null;
+	}
+
+	const text = document.getText();
+
+	let startTag = text.indexOf('<style>');
+	let endTag = text.indexOf('</style>');
+
+	if (startTag === -1 || endTag === -1) {
+		return null;
+	}
+
+	let indent = '';
+	let indentNumber = 0;
+	let pos = startTag - 1;
+	while (text[pos] !== '\n') {
+		indent += text[pos];
+		indentNumber++;
+		pos--;
+	}
+
+	indent += editorSettings.insertSpaces ? ' '.repeat(<number>editorSettings.tabSize) : '\t';
+
+	return {
+		indent,
+		range: new vscode.Range(document.positionAt(startTag + 8), document.positionAt(endTag - indentNumber))
+	};
+}
+
 /**
  * Use CSSComb module.
  *
@@ -103,9 +136,8 @@ function isSupportedSyntax(document: vscode.TextDocument): boolean {
  * @returns {Promise<IResult>}
  */
 async function useComb(document: vscode.TextDocument, selection: vscode.Selection): Promise<IResult> {
-	if (!isSupportedSyntax(document)) {
-		console.error('Cannot execute CSScomb because there is not style files. Supported: LESS, SCSS, SASS and CSS.');
-		return;
+	if (!isSupportedSyntax(document) && !editorConfiguration.supportEmbeddedStyles) {
+		throw new Error('Cannot execute CSScomb because there is not style files. Supported: LESS, SCSS, SASS and CSS.');
 	}
 
 	// Require CSSComb module & configuration file
@@ -118,7 +150,7 @@ async function useComb(document: vscode.TextDocument, selection: vscode.Selectio
 	// If configuration is broken then show error and use standard configuration
 	if (combConfig === 'syntaxError') {
 		vscode.window.showErrorMessage('Provided JSON file contains syntax errors. Used standard configuration!');
-		combConfig = 'csscomb';
+		combConfig = {};
 	}
 
 	// If preset is string then get configuration from CSSComb module
@@ -134,9 +166,17 @@ async function useComb(document: vscode.TextDocument, selection: vscode.Selectio
 		syntax = 'sass';
 	}
 
+	let embeddedRange;
 	let range;
 	let text;
-	if (!selection || (selection && selection.isEmpty)) {
+	if (syntax === 'html' && editorConfiguration.supportEmbeddedStyles) {
+		embeddedRange = searchEmbeddedStyles(document);
+		if (embeddedRange) {
+			range = embeddedRange.range;
+			text = document.getText(range);
+			syntax = 'css';
+		}
+	} else if (!selection || (selection && selection.isEmpty)) {
 		const lastLine = document.lineAt(document.lineCount - 1);
 		const start = new vscode.Position(0, 0);
 		const end = new vscode.Position(document.lineCount - 1, lastLine.text.length);
@@ -149,7 +189,16 @@ async function useComb(document: vscode.TextDocument, selection: vscode.Selectio
 	}
 
 	try {
-		const result = await comb.processString(text, { syntax });
+		let result = await comb.processString(text, { syntax });
+
+		if (editorConfiguration.supportEmbeddedStyles) {
+			result = result.split('\n').map((x, index) => {
+				if (Object.keys(editorConfiguration.preset).length !== 0 && index !== 0 && x !== '') {
+					return embeddedRange.indent + x;
+				}
+				return x;
+			}).join('\n');
+		}
 
 		return {
 			css: result,
@@ -164,6 +213,7 @@ export function activate(context: vscode.ExtensionContext) {
 	editorConfiguration = vscode.workspace.getConfiguration().get<IConfiguration>('csscomb');
 
 	const command = vscode.commands.registerTextEditorCommand('csscomb.execute', (textEditor) => {
+		editorSettings = textEditor.options;
 		useComb(textEditor.document, textEditor.selection).then((result) => {
 			textEditor.edit((editBuilder) => {
 				editBuilder.replace(result.range, result.css);
@@ -176,6 +226,7 @@ export function activate(context: vscode.ExtensionContext) {
 			output.clear();
 			output.append(err.toString());
 			output.show();
+			console.error(err);
 		});
 	});
 
@@ -210,6 +261,7 @@ export function activate(context: vscode.ExtensionContext) {
 			output.clear();
 			output.append(err.toString());
 			output.show();
+			console.error(err);
 		});
 
 		event.waitUntil(Promise.all([edit]));
