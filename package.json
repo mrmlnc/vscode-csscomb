@@ -2,7 +2,7 @@
   "name": "vscode-csscomb",
   "displayName": "CSScomb",
   "description": "Coding style formatter for CSS, Less, SCSS or Sass.",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "publisher": "mrmlnc",
   "license": "MIT",
   "engines": {
