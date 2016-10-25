@@ -191,9 +191,9 @@ async function useComb(document: vscode.TextDocument, selection: vscode.Selectio
 	try {
 		let result = await comb.processString(text, { syntax });
 
-		if (editorConfiguration.supportEmbeddedStyles) {
+		if (syntax === 'html' && editorConfiguration.supportEmbeddedStyles && Object.keys(combConfig).length !== 0) {
 			result = result.split('\n').map((x, index) => {
-				if (Object.keys(editorConfiguration.preset).length !== 0 && index !== 0 && x !== '') {
+				if (index !== 0 && x !== '') {
 					return embeddedRange.indent + x;
 				}
 				return x;
