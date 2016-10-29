@@ -72,7 +72,12 @@ async function requireConfig(): Promise<ICombConfiguration> {
 
 	// Specified config
 	if (typeof editorConfiguration.preset === 'string' && !/csscomb|yandex|zen/.test(<string>editorConfiguration.preset)) {
-		combConfig = await readConfig(path.join(vscode.workspace.rootPath || '', <string>editorConfiguration.preset));
+		let filepath = <string>editorConfiguration.preset;
+		if (filepath.startsWith('../') || filepath.startsWith('./')) {
+			filepath = path.join(vscode.workspace.rootPath || '', filepath);
+		}
+
+		combConfig = await readConfig(filepath);
 		return;
 	}
 
