@@ -26,7 +26,7 @@
     "SCSS"
   ],
   "categories": [
-    "Other"
+    "Formatters"
   ],
   "activationEvents": [
     "onCommand:csscomb.execute",
