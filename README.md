@@ -27,7 +27,7 @@ Press <kbd>F1</kbd> and run the command named `CSSComb`.
   * Type: `Object` or `String`
   * Defaut: `{}`
 
-Config's name. Should be one of the following: `csscomb`, `zen`, `yandex` or an object containing custom configuration.
+Config's name. Should be one of the following: `csscomb`, `zen`, `yandex` or an object containing custom configuration or path to config.
 
 **csscomb.formatOnSave**
 
@@ -40,7 +40,7 @@ Auto format on save.
 
   * Type: `Array`
   * Default: `[]`
-  * Example: `["variables.less", "mixins/**/*"]`
+  * Example: `['variables.less', 'mixins/**/*']`
 
 An optional array of glob-patterns to ignore files on save.
 

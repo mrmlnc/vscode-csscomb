@@ -70,6 +70,12 @@ async function requireConfig(): Promise<ICombConfiguration> {
 	// Update editorConfiguration
 	editorConfiguration = vscode.workspace.getConfiguration().get<IConfiguration>('csscomb');
 
+	// Specified config
+	if (typeof editorConfiguration.preset === 'string' && !/csscomb|yandex|zen/.test(<string>editorConfiguration.preset)) {
+		combConfig = await readConfig(path.join(vscode.workspace.rootPath || '', <string>editorConfiguration.preset));
+		return;
+	}
+
 	// Check workspace configuration
 	const workspaceConfigFinds = await vscode.workspace.findFiles('**/*csscomb.json', '**∕node_modules∕**', 1);
 	if (workspaceConfigFinds.length !== 0) {

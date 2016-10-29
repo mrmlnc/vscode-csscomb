@@ -48,7 +48,7 @@
         "csscomb.preset": {
           "type": ["object", "string"],
           "default": {},
-          "description": "One of the predefined configs (csscomb, yandex, zen) or custom config (object)."
+          "description": "One of the predefined configs (csscomb, yandex, zen) or custom config (object) or path to config."
         },
         "csscomb.ignoreFilesOnSave": {
           "type": "array",
