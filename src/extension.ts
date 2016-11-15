@@ -83,7 +83,7 @@ async function requireConfig(): Promise<ICombConfiguration> {
 
 	// Check workspace configuration
 	const workspaceConfigFinds = await vscode.workspace.findFiles('**/*csscomb.json', '**∕node_modules∕**', 1);
-	if (workspaceConfigFinds.length !== 0) {
+	if (workspaceConfigFinds && workspaceConfigFinds.length !== 0) {
 		combConfig = await readConfig(workspaceConfigFinds[0].fsPath);
 		return;
 	}
