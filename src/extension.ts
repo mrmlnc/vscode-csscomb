@@ -70,8 +70,11 @@ async function requireConfig(): Promise<ICombConfiguration> {
 	// Update editorConfiguration
 	editorConfiguration = vscode.workspace.getConfiguration().get<IConfiguration>('csscomb');
 
+	// Standard (built-in) configs
+	const builtInConfigs = ['csscomb', 'yandex', 'zen'];
+
 	// Specified config
-	if (typeof editorConfiguration.preset === 'string' && !/csscomb|yandex|zen/.test(editorConfiguration.preset)) {
+	if (typeof editorConfiguration.preset === 'string' && builtInConfigs.indexOf(editorConfiguration.preset) === -1) {
 		let filepath = path.resolve(editorConfiguration.preset);
 		if (vscode.workspace.rootPath && editorConfiguration.preset.indexOf('~') === -1) {
 			filepath = path.resolve(vscode.workspace.rootPath, editorConfiguration.preset);
