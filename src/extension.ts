@@ -76,7 +76,7 @@ async function requireConfig(): Promise<ICombConfiguration> {
 	// Specified config
 	if (typeof editorConfiguration.preset === 'string' && builtInConfigs.indexOf(editorConfiguration.preset) === -1) {
 		let filepath = path.resolve(editorConfiguration.preset);
-		if (vscode.workspace.rootPath && editorConfiguration.preset.indexOf('~') === -1) {
+		if (vscode.workspace.rootPath && (editorConfiguration.preset.startsWith('./') || editorConfiguration.preset.startsWith('../'))) {
 			filepath = path.resolve(vscode.workspace.rootPath, editorConfiguration.preset);
 		}
 

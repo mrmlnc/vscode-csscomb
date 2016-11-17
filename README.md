@@ -29,6 +29,10 @@ Press <kbd>F1</kbd> and run the command named `CSSComb`.
 
 Config's name. Should be one of the following: `csscomb`, `zen`, `yandex` or an object containing custom configuration or path to config.
 
+> **Warning!**
+>
+> If you want to specify a file in the current directory, the path must begin with a `./` or `../` if relative to the current directory.
+
 **csscomb.formatOnSave**
 
   * Type: `Boolean`
