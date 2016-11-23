@@ -82,7 +82,7 @@
   "devDependencies": {
     "vscode": "^1.0.0",
     "typescript": "^2.0.3",
-    "tslint": "^3.15.1"
+    "tslint": "^4.0.2"
   },
   "dependencies": {
     "csscomb-next": "https://github.com/mrmlnc/csscomb.js/tarball/d3929655199579fb3ee50da23186e630480cb1fe",
