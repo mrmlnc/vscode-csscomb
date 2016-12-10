@@ -87,6 +87,9 @@ async function useComb(document: vscode.TextDocument, selection: vscode.Selectio
 		vscode.window.showErrorMessage('Provided JSON file contains syntax errors!');
 		combConfig = {};
 	}
+	if (!combConfig) {
+		combConfig = {};
+	}
 
 	// If preset is string then get configuration from CSSComb module
 	if (typeof combConfig === 'string') {
