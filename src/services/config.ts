@@ -64,7 +64,7 @@ export class Config {
 	private getConfigFromEditor() {
 		const config = this.getEditorConfiguration();
 		if (typeof config.preset !== 'string') {
-			return null;
+			return Promise.resolve(config.preset);
 		}
 		if (this.builtConfigs.indexOf(config.preset) !== -1) {
 			return Promise.resolve(config.preset);
