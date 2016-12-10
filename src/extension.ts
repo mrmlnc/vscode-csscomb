@@ -1,109 +1,28 @@
 'use strict';
 
 import * as path from 'path';
-import * as os from 'os';
 
 import * as vscode from 'vscode';
 import * as multimatch from 'multimatch';
 import * as detectIndent from 'detect-indent';
 
-import * as fs from './lib/fs';
+import { Config, IConfiguration } from './services/config';
 
-interface IConfiguration {
-	preset: string | Object;
-	ignoreFilesOnSave: string[];
-	supportEmbeddedStyles: boolean;
-	formatOnSave: boolean;
-	useLatestCore: boolean;
-}
-
-interface ICombConfiguration {
-	exclude?: string[];
-}
+let output: vscode.OutputChannel;
 
 interface IResult {
 	css: string;
 	range: vscode.Range;
 }
 
-// "global" variables
-const osHomeDir = os.homedir();
-let Comb;
-let combConfig: ICombConfiguration;
-
-let editorSettings: vscode.TextEditorOptions;
-let editorConfiguration: IConfiguration;
-let output: vscode.OutputChannel;
-
 /**
  * Update CSSComb module version only if needed.
  *
  * @param {IConfiguration} config
  */
-function requireCore(config: IConfiguration): void {
-	const moduleVersion = config.useLatestCore ? '-next' : '';
-	Comb = require(`csscomb${moduleVersion}`);
-}
-
-/**
- * Read CSSComb configuration file.
- *
- * @param {string} filepath
- * @returns {Promise<any>}
- */
-function readConfig(filepath: string): Promise<any> {
-	return fs.fileRead(filepath).then((data) => {
-		try {
-			return JSON.parse(data);
-		} catch (err) {
-			return 'syntaxError';
-		}
-	});
-}
-
-/**
- * Update CSSComb configuration only if needed.
- *
- * @param {IConfiguration} config
- */
-async function requireConfig(): Promise<ICombConfiguration> {
-	// Update editorConfiguration
-	editorConfiguration = vscode.workspace.getConfiguration().get<IConfiguration>('csscomb');
-
-	// Standard (built-in) configs
-	const builtInConfigs = ['csscomb', 'yandex', 'zen'];
-
-	// Specified config
-	if (typeof editorConfiguration.preset === 'string' && builtInConfigs.indexOf(editorConfiguration.preset) === -1) {
-		let filepath = editorConfiguration.preset;
-		if (osHomeDir && filepath.startsWith('~')) {
-			filepath = filepath.replace(/^~($|\/|\\)/, `${osHomeDir}$1`);
-		}
-
-		if (vscode.workspace.rootPath && (editorConfiguration.preset.startsWith('./') || editorConfiguration.preset.startsWith('../'))) {
-			filepath = path.resolve(vscode.workspace.rootPath, editorConfiguration.preset);
-		}
-
-		combConfig = await readConfig(filepath);
-		return;
-	}
-
-	// Check workspace configuration
-	const workspaceConfigFinds = await vscode.workspace.findFiles('**/*csscomb.json', '**∕node_modules∕**', 1);
-	if (workspaceConfigFinds && workspaceConfigFinds.length !== 0) {
-		combConfig = await readConfig(workspaceConfigFinds[0].fsPath);
-		return;
-	}
-
-	// Check global configuration
-	const globalConfigPath = path.join(osHomeDir, '.csscomb.json');
-	const globalConfigFinds = await fs.fileExist(globalConfigPath);
-	if (globalConfigFinds) {
-		combConfig = await readConfig(globalConfigPath);
-		return;
-	}
-
-	combConfig = <ICombConfiguration>editorConfiguration.preset;
+function requireCore(useLatestCore: boolean): any {
+	const moduleVersion = useLatestCore ? '-next' : '';
+	return require(`csscomb${moduleVersion}`);
 }
 
 /**
@@ -146,7 +65,6 @@ function searchEmbeddedStyles(document: vscode.TextDocument): { indent: string, 
 		range: new vscode.Range(document.positionAt(startTag + 8), document.positionAt(endTag - indentNumber))
 	};
 }
-
 /**
  * Use CSSComb module.
  *
@@ -154,21 +72,19 @@ function searchEmbeddedStyles(document: vscode.TextDocument): { indent: string, 
  * @param {vscode.Selection} selection
  * @returns {Promise<IResult>}
  */
-async function useComb(document: vscode.TextDocument, selection: vscode.Selection): Promise<IResult> {
+async function useComb(document: vscode.TextDocument, selection: vscode.Selection, combConfig: any): Promise<IResult> {
+	const editorConfiguration = vscode.workspace.getConfiguration().get<IConfiguration>('csscomb');
+
 	if (!isSupportedSyntax(document) && !editorConfiguration.supportEmbeddedStyles) {
 		throw new Error('Cannot execute CSScomb because there is not style files. Supported: LESS, SCSS, SASS and CSS.');
 	}
 
 	// Require CSSComb module & configuration file
-	await requireCore(editorConfiguration);
-
-	if (!combConfig) {
-		await requireConfig();
-	}
+	const Comb = await requireCore(editorConfiguration.useLatestCore);
 
 	// If configuration is broken then show error and use standard configuration
 	if (combConfig === 'syntaxError') {
-		vscode.window.showErrorMessage('Provided JSON file contains syntax errors. Used standard configuration!');
+		vscode.window.showErrorMessage('Provided JSON file contains syntax errors!');
 		combConfig = {};
 	}
 
@@ -228,75 +144,71 @@ async function useComb(document: vscode.TextDocument, selection: vscode.Selectio
 	}
 }
 
+/**
+ * Show message in iutput channel.
+ *
+ * @param {string} msg
+ */
+function showOutput(msg: string): void {
+	if (!output) {
+		output = vscode.window.createOutputChannel('CSSComb');
+	}
+
+	output.clear();
+	output.appendLine('[CSSComb]\n');
+	output.append(msg);
+	output.show();
+}
+
 export function activate(context: vscode.ExtensionContext) {
-	editorConfiguration = vscode.workspace.getConfiguration().get<IConfiguration>('csscomb');
+	const config = new Config();
 
-	const command = vscode.commands.registerTextEditorCommand('csscomb.execute', (textEditor) => {
-		editorSettings = textEditor.options;
-		useComb(textEditor.document, textEditor.selection).then((result) => {
-			textEditor.edit((editBuilder) => {
-				editBuilder.replace(result.range, result.css);
+	const onCommand = vscode.commands.registerTextEditorCommand('csscomb.execute', (textEditor) => {
+		config.scan().then((preset) => {
+			useComb(textEditor.document, textEditor.selection, preset).then((result) => {
+				textEditor.edit((editBuilder) => {
+					editBuilder.replace(result.range, result.css);
+				});
+			}).catch((err) => {
+				showOutput(err.toString());
 			});
-		}).catch((err) => {
-			if (!output) {
-				output = vscode.window.createOutputChannel('CSSComb');
-			}
-
-			output.clear();
-			output.append(err.toString());
-			output.show();
-			console.error(err);
 		});
 	});
 
 	const onSave = vscode.workspace.onWillSaveTextDocument((event) => {
+		const editorConfiguration = vscode.workspace.getConfiguration().get<IConfiguration>('csscomb');
 		// Skip the formatting code without Editor configuration or if file not supported
 		if (!editorConfiguration || !editorConfiguration.formatOnSave || !isSupportedSyntax(event.document)) {
 			return;
 		}
 
-		// Skip excluded files by Editor & CSSComb configuration file
-		let excludes: string[] = [];
-		if (editorConfiguration && editorConfiguration.ignoreFilesOnSave) {
-			excludes = excludes.concat(editorConfiguration.ignoreFilesOnSave);
-		}
-		if (combConfig && combConfig.exclude) {
-			excludes = excludes.concat(combConfig.exclude);
-		}
-		if (excludes.length !== 0) {
-			const currentFile = path.relative(vscode.workspace.rootPath, event.document.fileName);
-			if (multimatch([currentFile], excludes).length !== 0) {
-				return;
-			}
-		}
+		const edit = config.scan().then((preset) => {
 
-		const edit = useComb(event.document, null).then((result) => {
-			return vscode.TextEdit.replace(result.range, result.css);
-		}).catch((err) => {
-			if (!output) {
-				output = vscode.window.createOutputChannel('CSSComb');
+			// Skip excluded files by Editor & CSSComb configuration file
+			let excludes: string[] = [];
+			if (editorConfiguration && editorConfiguration.ignoreFilesOnSave) {
+				excludes = excludes.concat(editorConfiguration.ignoreFilesOnSave);
+			}
+			if (preset && preset.exclude) {
+				excludes = excludes.concat(preset.exclude);
+			}
+			if (excludes.length !== 0) {
+				const currentFile = path.relative(vscode.workspace.rootPath, event.document.fileName);
+				if (multimatch([currentFile], excludes).length !== 0) {
+					return;
+				}
 			}
 
-			output.clear();
-			output.append(err.toString());
-			output.show();
-			console.error(err);
+			return useComb(event.document, null, preset).then((result) => {
+				return vscode.TextEdit.replace(result.range, result.css);
+			}).catch((err) => {
+				showOutput(err.toString());
+			});
 		});
 
 		event.waitUntil(Promise.all([edit]));
 	});
 
-	// Update configuration only if configuration file was is changed
-	const workspaceWatcher = vscode.workspace.createFileSystemWatcher('**/*csscomb.json');
-	workspaceWatcher.onDidCreate(() => requireConfig());
-	workspaceWatcher.onDidDelete(() => requireConfig());
-	workspaceWatcher.onDidChange(() => requireConfig());
-
-	const configurationWatcher = vscode.workspace.onDidChangeConfiguration(() => requireConfig());
-
-	// Subscriptions
-	context.subscriptions.push(command);
+	context.subscriptions.push(onCommand);
 	context.subscriptions.push(onSave);
-	context.subscriptions.push(workspaceWatcher);
-	context.subscriptions.push(configurationWatcher);
 }

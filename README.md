@@ -31,7 +31,7 @@ Config's name. Should be one of the following: `csscomb`, `zen`, `yandex` or an 
 
 > **Warning!**
 >
-> If you want to specify a file in the current directory, the path must begin with a `./` or `../` if relative to the current directory.
+> If you want to specify a file in the current directory, the path must begin with a `./` or `../` if relative to the current directory. Also you can use HOME directory as `~` symbol.
 
 **csscomb.formatOnSave**
 
