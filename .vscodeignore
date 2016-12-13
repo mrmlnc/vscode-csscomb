@@ -1,6 +1,7 @@
 .vscode/**
+.vscode-test/**
 typings/**
-test/**
+fixtures/**
 src/**
 .editorconfig
 .gitignore
