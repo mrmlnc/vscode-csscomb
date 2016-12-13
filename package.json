@@ -2,7 +2,7 @@
   "name": "vscode-csscomb",
   "displayName": "CSScomb",
   "description": "Coding style formatter for CSS, Less, SCSS or Sass.",
-  "version": "3.2.6",
+  "version": "4.0.0",
   "publisher": "mrmlnc",
   "license": "MIT",
   "engines": {
@@ -72,22 +72,34 @@
         }
       }
     },
-    "jsonValidation": [
-      {
-        "fileMatch": "*csscomb.json",
-        "url": "http://json.schemastore.org/csscomb"
-      }
-    ]
+    "jsonValidation": [{
+      "fileMatch": "*csscomb.json",
+      "url": "http://json.schemastore.org/csscomb"
+    }]
   },
   "devDependencies": {
-    "vscode": "^1.0.0",
+    "@types/detect-indent": "^0.1.30",
+    "@types/micromatch": "^2.3.29",
+    "@types/mocha": "^2.2.33",
+    "@types/node": "0.0.2",
+    "mocha": "^3.2.0",
+    "tslint": "^3.15.1",
     "typescript": "^2.0.3",
-    "tslint": "^3.15.1"
+    "vscode": "^1.0.0"
   },
   "dependencies": {
-    "csscomb-next": "https://github.com/mrmlnc/csscomb.js/tarball/d3929655199579fb3ee50da23186e630480cb1fe",
     "csscomb": "3.1.8",
-    "multimatch": "2.1.0",
-    "detect-indent": "5.0.0"
+    "csscomb-next": "https://github.com/mrmlnc/csscomb.js/tarball/d3929655199579fb3ee50da23186e630480cb1fe",
+    "detect-indent": "5.0.0",
+    "micromatch": "^2.3.11"
+  },
+  "scripts": {
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "clean": "rimraf out",
+    "lint": "tslint src/**/*.ts",
+    "compile": "tsc",
+    "test": "set CODE_TESTS_WORKSPACE=fixtures && node ./node_modules/vscode/bin/test",
+    "build": "npm run clean && npm run lint && npm run compile && npm test",
+    "watch": "npm run clean && npm run lint && npm run compile -- --sourceMap --watch"
   }
 }
