@@ -14,7 +14,7 @@ export interface IConfiguration {
 	useLatestCore: boolean;
 }
 
-interface ICombConfiguration {
+export interface ICombConfiguration {
 	exclude?: string[];
 }
 
@@ -28,15 +28,15 @@ export class Config {
 		// code
 	}
 
-	public async scan() {
+	public async scan(): Promise<ICombConfiguration> {
 		const editorConfig = await this.getConfigFromEditor();
-		if (editorConfig) {
+		if (editorConfig && Object.keys(editorConfig).length !== 0) {
 			return editorConfig;
 		}
 
-		const workspaceConfog = await this.getConfigFromWorkspace();
-		if (workspaceConfog) {
-			return workspaceConfog;
+		const workspaceConfig = await this.getConfigFromWorkspace();
+		if (workspaceConfig) {
+			return workspaceConfig;
 		}
 
 		const globalConfig = await this.getConfigFromUser();
@@ -44,9 +44,19 @@ export class Config {
 			return globalConfig;
 		}
 
-		return null;
+		return {};
 	}
 
+	/**
+	 * Returns settings for CSSComb
+	 */
+	public getEditorConfiguration(): IConfiguration {
+		return vscode.workspace.getConfiguration().get<IConfiguration>('csscomb');
+	}
+
+	/**
+	 * Returns CSSComb config or 'syntaxError' if it broken.
+	 */
 	private readConfigurationFile(filepath: string): Promise<ICombConfiguration> {
 		return fileRead(filepath).then((content) => {
 			try {
@@ -57,29 +67,37 @@ export class Config {
 		});
 	}
 
-	private getEditorConfiguration(): IConfiguration {
-		return vscode.workspace.getConfiguration().get<IConfiguration>('csscomb');
-	}
-
+	/**
+	 * Attempt to find the configuration in the Editor settings.
+	 */
 	private getConfigFromEditor() {
 		const config = this.getEditorConfiguration();
 		if (typeof config.preset !== 'string') {
 			return Promise.resolve(config.preset);
 		}
-		if (this.builtConfigs.indexOf(config.preset) !== -1) {
+		if (typeof config.preset === 'string' && this.builtConfigs.indexOf(config.preset) !== -1) {
 			return Promise.resolve(config.preset);
 		}
 
+		// Then csscomb.preset is filepath
 		let filepath = config.preset;
+
+		// Expand HOME directory within filepath
 		if (config.preset.startsWith('~')) {
 			filepath = config.preset.replace(/^~($|\/|\\)/, `${this.home}$1`);
 		}
+
+		// Expand relative path within filepath
 		if (this.root && (config.preset.startsWith('./') || config.preset.startsWith('../'))) {
 			filepath = path.resolve(this.root, config.preset);
 		}
+
 		return this.readConfigurationFile(filepath);
 	}
 
+	/**
+	 * Attempt to find the configuration inside open workspace.
+	 */
 	private getConfigFromWorkspace(): Thenable<IConfiguration> {
 		return vscode.workspace.findFiles('**/*csscomb.json', '**/node_modules/**').then((matches) => {
 			if (!Array.isArray(matches) || (matches && matches.length === 0)) {
@@ -90,6 +108,9 @@ export class Config {
 		});
 	}
 
+	/**
+	 * Attempt to find the configuration inside user HOME directory.
+	 */
 	private getConfigFromUser(): Thenable<IConfiguration> {
 		const filepathWithoutDot = path.join(this.home, 'csscomb.json');
 		const filepathWithDot = path.join(this.home, '.csscomb.json');
