@@ -38,4 +38,26 @@ suite('Services/Comb', () => {
 			});
 	});
 
+	test('Should work with HTML', () => {
+		const settingsString = JSON.stringify({
+			'csscomb.supportEmbeddedStyles': true,
+			'csscomb.preset': {
+				'color-case': 'upper'
+			}
+		});
+
+		return removeFile(workspaceSettings)
+			.then(() => writeFile(workspaceSettings, settingsString))
+			.then(() => timeOut())
+			.then(() => config.scan())
+			.then((preset) => {
+				return vscode.workspace.openTextDocument(path.join(fixtures, './html/test.html')).then((res) => {
+					return comb.use(res, null, preset);
+				});
+			})
+			.then((result) => {
+				assert.ok(/#E5E5E5/.test(result.css));
+			});
+	});
+
 });
