@@ -23,7 +23,7 @@ export interface IEmbeddedResult {
 
 export class Comb {
 
-	private Comb: any;
+	private combConstructor: any;
 	private config = new Config();
 	private settings = this.config.getEditorConfiguration();
 
@@ -33,7 +33,7 @@ export class Comb {
 	private preset: any;
 
 	constructor() {
-		// code
+		// Code
 	}
 
 	public use(document: vscode.TextDocument, selection: vscode.Selection, preset: any): Promise<IResult> {
@@ -61,11 +61,11 @@ export class Comb {
 
 		// If preset is string then get configuration from CSSComb module
 		if (typeof this.preset === 'string') {
-			this.preset = this.Comb.getConfig(this.preset);
+			this.preset = this.combConstructor.getConfig(this.preset);
 		}
 
 		// Creates instance of CSSComb
-		const comb = new this.Comb();
+		const comb = new this.combConstructor();
 		comb.configure(this.preset);
 
 		this.syntax = this.document.languageId;
@@ -102,7 +102,7 @@ export class Comb {
 
 	private requireCore() {
 		const moduleVersion = this.settings.useLatestCore ? '-next' : '';
-		this.Comb = require(`csscomb${moduleVersion}`);
+		this.combConstructor = require(`csscomb${moduleVersion}`);
 	}
 
 	private getTextAndRange(): ITextAndRange {
@@ -142,8 +142,8 @@ export class Comb {
 
 		const text = this.document.getText();
 
-		let startTag = text.indexOf('<style>');
-		let endTag = text.indexOf('</style>');
+		const startTag = text.indexOf('<style>');
+		const endTag = text.indexOf('</style>');
 
 		if (startTag === -1 || endTag === -1) {
 			return null;

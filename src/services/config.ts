@@ -25,7 +25,7 @@ export class Config {
 	private root = vscode.workspace.rootPath;
 
 	constructor() {
-		// code
+		// Code
 	}
 
 	public async scan(): Promise<ICombConfiguration> {
