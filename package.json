@@ -6,7 +6,7 @@
   "publisher": "mrmlnc",
   "license": "MIT",
   "engines": {
-    "vscode": "^1.6.0"
+    "vscode": "^1.9.0"
   },
   "icon": "icon.png",
   "author": {
@@ -80,12 +80,13 @@
   "devDependencies": {
     "@types/detect-indent": "^0.1.30",
     "@types/micromatch": "^2.3.29",
-    "@types/mocha": "^2.2.33",
-    "@types/node": "0.0.2",
+    "@types/mocha": "^2.2.39",
+    "@types/node": "^7.0.5",
     "mocha": "^3.2.0",
-    "tslint": "^3.15.1",
-    "typescript": "^2.0.3",
-    "vscode": "^1.0.0"
+    "tslint": "^4.4.2",
+    "tslint-config-xo": "^1.1.0",
+    "typescript": "^2.1.6",
+    "vscode": "^1.0.3"
   },
   "dependencies": {
     "csscomb": "3.1.8",
