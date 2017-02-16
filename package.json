@@ -88,7 +88,7 @@
     "vscode": "^1.0.0"
   },
   "dependencies": {
-    "csscomb": "3.1.8",
+    "csscomb": "4.0.0",
     "csscomb-next": "https://github.com/mrmlnc/csscomb.js/tarball/d3929655199579fb3ee50da23186e630480cb1fe",
     "detect-indent": "5.0.0",
     "micromatch": "^2.3.11"
