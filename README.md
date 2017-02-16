@@ -53,7 +53,7 @@ An optional array of glob-patterns to ignore files on save.
   * Type: `Boolean`
   * Default: `false`
 
-Use CSScomb **v4.0.0-alpha**.
+Use CSScomb **v4.0.0** [see](https://github.com/csscomb/csscomb.js/blob/dev/CHANGELOG.md#400---2017-02-16) as [fork without `babel-polyfill`](https://github.com/mrmlnc/csscomb.js/tree/vscode).
 
 For example:
 
