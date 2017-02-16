@@ -90,9 +90,9 @@
   },
   "dependencies": {
     "csscomb": "3.1.8",
-    "csscomb-next": "https://github.com/mrmlnc/csscomb.js/tarball/d3929655199579fb3ee50da23186e630480cb1fe",
+    "csscomb-next": "https://github.com/mrmlnc/csscomb.js/tarball/af9a80462b2c17161f4da0585f3a4e4e7eb7cc83",
     "detect-indent": "5.0.0",
-    "micromatch": "^2.3.11"
+    "micromatch": "2.3.11"
   },
   "scripts": {
     "postinstall": "node ./node_modules/vscode/bin/install",

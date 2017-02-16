@@ -3,7 +3,7 @@
 import * as vscode from 'vscode';
 import * as detectIndent from 'detect-indent';
 
-import { Config } from './config';
+import { Config, IConfiguration } from './config';
 
 export interface IResult {
 	css: string;
@@ -24,8 +24,9 @@ export interface IEmbeddedResult {
 export class Comb {
 
 	private combConstructor: any;
+	private combVersion: string;
 	private config = new Config();
-	private settings = this.config.getEditorConfiguration();
+	private settings: IConfiguration;
 
 	private syntax: string;
 	private document: vscode.TextDocument;
@@ -36,11 +37,12 @@ export class Comb {
 		// Code
 	}
 
-	public use(document: vscode.TextDocument, selection: vscode.Selection, preset: any): Promise<IResult> {
+	public async use(document: vscode.TextDocument, selection: vscode.Selection, preset: any): Promise<IResult> {
 		// Update
 		this.document = document;
 		this.selection = selection;
 		this.preset = preset;
+		this.settings = this.config.getEditorConfiguration();
 
 		// If it's not CSS and we don't support embedded styles
 		if (!this.checkSyntax(this.document) && !this.settings.supportEmbeddedStyles) {
@@ -76,7 +78,7 @@ export class Comb {
 		const content = this.getTextAndRange();
 
 		try {
-			let result = comb.processString(content.text, { syntax: this.syntax });
+			let result = await comb.processString(content.text, { syntax: this.syntax });
 
 			if (content.embeddedRange && this.settings.supportEmbeddedStyles && Object.keys(this.preset).length !== 0) {
 				result = result.split('\n').map((x, index) => {
@@ -101,8 +103,15 @@ export class Comb {
 	}
 
 	private requireCore() {
-		const moduleVersion = this.settings.useLatestCore ? '-next' : '';
-		this.combConstructor = require(`csscomb${moduleVersion}`);
+		let moduleVersion = 'csscomb';
+		if (this.settings.useLatestCore) {
+			moduleVersion += '-next';
+		}
+
+		if (moduleVersion !== this.combVersion) {
+			this.combConstructor = require(moduleVersion);
+			this.combVersion = moduleVersion;
+		}
 	}
 
 	private getTextAndRange(): ITextAndRange {
