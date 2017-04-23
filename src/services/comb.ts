@@ -118,7 +118,7 @@ export class Comb {
 		let embeddedRange;
 		let range;
 		let text;
-		if (this.syntax === 'html' && this.settings.supportEmbeddedStyles) {
+		if (this.settings.supportEmbeddedStyles && this.isEmbeddedStyles(this.syntax)) {
 			embeddedRange = this.searchEmbeddedStyles();
 			if (embeddedRange) {
 				range = embeddedRange.range;
@@ -144,8 +144,12 @@ export class Comb {
 		};
 	}
 
+	private isEmbeddedStyles(languageId: string): boolean {
+		return ['html', 'vue', 'vue-html'].indexOf(languageId) !== -1;
+	}
+
 	private searchEmbeddedStyles(): IEmbeddedResult {
-		if (this.document.languageId !== 'html') {
+		if (!this.isEmbeddedStyles(this.document.languageId)) {
 			return null;
 		}
 
