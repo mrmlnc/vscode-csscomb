@@ -1,5 +1,7 @@
 # vscode-csscomb
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/mrmlnc/vscode-csscomb.svg)](https://greenkeeper.io/)
+
 > VS Code plugin for [CSScomb](http://csscomb.com/) — CSS coding style formatter
 
 ## Install
