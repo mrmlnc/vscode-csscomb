@@ -3,8 +3,18 @@ logs/
 *.log
 npm-debug.log*
 
+# IDE & editors
+.idea
+.vscode
+.vscode-test
+
 # Dependency directory
 node_modules/
 
-# Build directory
+# Compiled and tempory files
+.tmp/
 out/
+
+# Other files
+package-lock.json
+yarn.lock
