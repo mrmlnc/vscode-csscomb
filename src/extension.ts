@@ -63,7 +63,7 @@ export function activate(context: vscode.ExtensionContext) {
 			if (excludes.length !== 0) {
 				const currentFile = path.relative(vscode.workspace.rootPath, event.document.fileName);
 				if (micromatch([currentFile], excludes).length !== 0) {
-					return;
+					return null;
 				}
 			}
 

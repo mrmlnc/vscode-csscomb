@@ -13,7 +13,7 @@ export function timeOut() {
 export function removeFile(filepath: string) {
 	return fileExist(filepath).then((exists) => {
 		if (!exists) {
-			return;
+			return null;
 		}
 
 		return new Promise((resolve, reject) => {

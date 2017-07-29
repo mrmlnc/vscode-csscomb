@@ -53,7 +53,7 @@ suite('Services/Config', () => {
 			.then((preset) => {
 				assert.deepEqual(preset, {
 					'color-case': 'upper',
-					'file': true
+					file: true
 				});
 			});
 	});
@@ -61,7 +61,7 @@ suite('Services/Config', () => {
 	test('Workspace config', () => {
 		const settingsString = JSON.stringify({
 			'color-case': 'upper',
-			'workspace': true
+			workspace: true
 		});
 
 		return removeConfigs()
@@ -71,7 +71,7 @@ suite('Services/Config', () => {
 			.then((preset) => {
 				assert.deepEqual(preset, {
 					'color-case': 'upper',
-					'workspace': true
+					workspace: true
 				});
 			});
 	});
@@ -79,23 +79,23 @@ suite('Services/Config', () => {
 	test('Global config', () => {
 		const settingsString = JSON.stringify({
 			'color-case': 'upper',
-			'global': true
+			global: true
 		});
 
-		return  removeConfigs()
+		return removeConfigs()
 			.then(() => writeFile(globalConfig, settingsString))
 			.then(() => timeOut())
 			.then(() => config.scan())
 			.then((preset) => {
 				assert.deepEqual(preset, {
 					'color-case': 'upper',
-					'global': true
+					global: true
 				});
 			});
 	});
 
 	test('Null config', () => {
-		return  removeConfigs()
+		return removeConfigs()
 			.then(() => timeOut())
 			.then(() => config.scan())
 			.then((preset) => {

@@ -81,7 +81,7 @@ export class Comb {
 			let result = await comb.processString(content.text, { syntax: this.syntax });
 
 			if (content.embeddedRange && this.settings.supportEmbeddedStyles && Object.keys(this.preset).length !== 0) {
-				result = result.split('\n').map((x, index) => {
+				result = result.split('\n').map((x: string, index: number) => {
 					if (index !== 0 && x !== '') {
 						return content.embeddedRange.indent + x;
 					}

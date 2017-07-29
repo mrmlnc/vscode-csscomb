@@ -36,12 +36,12 @@ export class Config {
 
 		const workspaceConfig = await this.getConfigFromWorkspace();
 		if (workspaceConfig) {
-			return workspaceConfig;
+			return <ICombConfiguration>workspaceConfig;
 		}
 
 		const globalConfig = await this.getConfigFromUser();
 		if (globalConfig) {
-			return globalConfig;
+			return <ICombConfiguration>globalConfig;
 		}
 
 		return {};
@@ -98,7 +98,7 @@ export class Config {
 	/**
 	 * Attempt to find the configuration inside open workspace.
 	 */
-	private getConfigFromWorkspace(): Thenable<IConfiguration> {
+	private getConfigFromWorkspace(): Thenable<ICombConfiguration> {
 		return vscode.workspace.findFiles('**/*csscomb.json', '**/node_modules/**').then((matches) => {
 			if (!Array.isArray(matches) || (matches && matches.length === 0)) {
 				return null;
@@ -111,7 +111,7 @@ export class Config {
 	/**
 	 * Attempt to find the configuration inside user HOME directory.
 	 */
-	private getConfigFromUser(): Thenable<IConfiguration> {
+	private getConfigFromUser(): Thenable<ICombConfiguration> {
 		const filepathWithoutDot = path.join(this.home, 'csscomb.json');
 		const filepathWithDot = path.join(this.home, '.csscomb.json');
 
