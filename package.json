@@ -37,16 +37,21 @@
   ],
   "main": "./out/extension",
   "contributes": {
-    "commands": [{
-      "command": "csscomb.execute",
-      "title": "CSSComb: Format styles"
-    }],
+    "commands": [
+      {
+        "command": "csscomb.execute",
+        "title": "CSSComb: Format styles"
+      }
+    ],
     "configuration": {
       "type": "object",
       "title": "CSScomb configuration",
       "properties": {
         "csscomb.preset": {
-          "type": ["object", "string"],
+          "type": [
+            "object",
+            "string"
+          ],
           "default": {},
           "description": "One of the predefined configs (csscomb, yandex, zen) or custom config (object) or path to config."
         },
@@ -72,10 +77,12 @@
         }
       }
     },
-    "jsonValidation": [{
-      "fileMatch": "*csscomb.json",
-      "url": "http://json.schemastore.org/csscomb"
-    }]
+    "jsonValidation": [
+      {
+        "fileMatch": "*csscomb.json",
+        "url": "http://json.schemastore.org/csscomb"
+      }
+    ]
   },
   "devDependencies": {
     "@types/detect-indent": "^0.1.30",
@@ -92,7 +99,8 @@
     "csscomb": "4.2.0",
     "csscomb-next": "https://github.com/mrmlnc/csscomb.js/tarball/af9a80462b2c17161f4da0585f3a4e4e7eb7cc83",
     "detect-indent": "5.0.0",
-    "micromatch": "3.0.4"
+    "micromatch": "3.0.4",
+    "tslib": "^1.7.1"
   },
   "scripts": {
     "postinstall": "node ./node_modules/vscode/bin/install",
