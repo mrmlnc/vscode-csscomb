@@ -10,4 +10,4 @@ tslint.json
 
 .vscode/**
 src/**
-fixtures/**
+smoke/**

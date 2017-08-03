@@ -1,19 +1,17 @@
-'use strict';
-
 import * as path from 'path';
 
 import * as vscode from 'vscode';
 import * as micromatch from 'micromatch';
 
-import { Config } from './services/config';
-import { Comb } from './services/comb';
+import StylesProvider from './providers/styles';
+import EmbeddedProvider from './providers/embedded';
+
+import { IPluginSettings } from './types';
 
 let output: vscode.OutputChannel;
 
 /**
  * Show message in iutput channel.
- *
- * @param {string} msg
  */
 function showOutput(msg: string): void {
 	if (!output) {
@@ -26,55 +24,80 @@ function showOutput(msg: string): void {
 	output.show();
 }
 
-export function activate(context: vscode.ExtensionContext) {
-	const config = new Config();
-	const comb = new Comb();
+function getProvider(document: vscode.TextDocument, selection: vscode.Selection, workspace: string, filepath: string, settings: IPluginSettings) {
+	const stylesProvider = new StylesProvider(document, selection, document.languageId, workspace, filepath, settings);
+	const embeddedProvider = new EmbeddedProvider(document, document.languageId, workspace, filepath, settings);
 
+	if (stylesProvider.isApplycable()) {
+		return stylesProvider;
+	} else if (embeddedProvider.isApplycable()) {
+		return embeddedProvider;
+	}
+
+	return null;
+}
+
+export function activate(context: vscode.ExtensionContext) {
 	const onCommand = vscode.commands.registerTextEditorCommand('csscomb.execute', (textEditor) => {
-		config.scan().then((preset) => {
-			comb.use(textEditor.document, textEditor.selection, preset).then((result) => {
-				textEditor.edit((editBuilder) => {
-					editBuilder.replace(result.range, result.css);
+		const document = textEditor.document;
+		const selection = textEditor.selection;
+		const workspace = vscode.workspace.rootPath;
+		const filepath = document.uri.fsPath;
+		const settings = vscode.workspace.getConfiguration().get<IPluginSettings>('csscomb');
+
+		const provider = getProvider(document, selection, workspace, filepath, settings);
+
+		if (!process) {
+			return showOutput(`We do not support ${document.languageId} syntax.`);
+		}
+
+		provider.format().then((blocks) => {
+			textEditor.edit((builder) => {
+				blocks.forEach((block) => {
+					if (block.error) {
+						showOutput(block.error.toString());
+					}
+
+					builder.replace(block.range, block.content);
 				});
-			}).catch((err) => {
-				showOutput(err.toString());
 			});
-		});
+		}).catch((err: Error) => showOutput(err.stack));
 	});
 
 	const onSave = vscode.workspace.onWillSaveTextDocument((event) => {
-		const editorConfiguration = config.getEditorConfiguration();
+		const document = event.document;
+		const workspace = vscode.workspace.rootPath;
+		const filepath = document.uri.fsPath;
+		const settings = vscode.workspace.getConfiguration().get<IPluginSettings>('csscomb');
 
-		// Skip the formatting code without Editor configuration or if file not supported
-		if (!editorConfiguration || !editorConfiguration.formatOnSave || !comb.checkSyntax(event.document)) {
-			return;
+		// Skip files without providers
+		const provider = getProvider(document, null, workspace, filepath, settings);
+
+		// Skip the formatting code without Editor configuration
+		if (!settings || !settings.formatOnSave || !provider) {
+			return null;
 		}
 
-		const edit = config.scan().then((preset) => {
-
-			// Skip excluded files by Editor & CSSComb configuration file
-			let excludes: string[] = [];
-			if (editorConfiguration && editorConfiguration.ignoreFilesOnSave) {
-				excludes = excludes.concat(editorConfiguration.ignoreFilesOnSave);
+		// Skip excluded files by Editor & CSSComb configuration file
+		let excludes: string[] = [];
+		if (settings && settings.ignoreFilesOnSave) {
+			excludes = excludes.concat(<any>settings.ignoreFilesOnSave);
+		}
+		if (typeof settings.preset === 'object' && settings.preset.exclude) {
+			excludes = excludes.concat(settings.preset.exclude);
+		}
+		if (excludes.length !== 0) {
+			const currentFile = path.relative(vscode.workspace.rootPath, event.document.fileName);
+			if (micromatch([currentFile], excludes).length !== 0) {
+				return null;
 			}
-			if (preset && preset.exclude) {
-				excludes = excludes.concat(preset.exclude);
-			}
-			if (excludes.length !== 0) {
-				const currentFile = path.relative(vscode.workspace.rootPath, event.document.fileName);
-				if (micromatch([currentFile], excludes).length !== 0) {
-					return null;
-				}
-			}
+		}
 
-			return comb.use(event.document, null, preset).then((result) => {
-				return vscode.TextEdit.replace(result.range, result.css);
-			}).catch((err) => {
-				showOutput(err.toString());
-			});
-		});
+		const actions = provider.format().then((blocks) => {
+			return blocks.map((block) => vscode.TextEdit.replace(block.range, block.content));
+		}).catch((err: Error) => showOutput(err.stack));
 
-		event.waitUntil(Promise.all([edit]));
+		event.waitUntil(actions);
 	});
 
 	context.subscriptions.push(onCommand);

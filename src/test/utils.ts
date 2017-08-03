@@ -1,41 +1,20 @@
-'use strict';
+import { TextDocument } from 'vscode';
 
-import * as fs from 'fs';
-
-import { fileExist } from '../utils/fs';
-
-export function timeOut() {
-	return new Promise((resolve) => {
-		setTimeout(resolve, 1000);
-	});
+export class Position {
+	constructor(public line: number, public character: number) { }
 }
 
-export function removeFile(filepath: string) {
-	return fileExist(filepath).then((exists) => {
-		if (!exists) {
-			return null;
-		}
-
-		return new Promise((resolve, reject) => {
-			fs.unlink(filepath, (err) => {
-				if (err) {
-					return reject(err);
-				}
-
-				resolve();
-			});
-		});
-	});
+export class Range {
+	constructor(public start: Position, public end: Position) { }
 }
 
-export function writeFile(filepath: string, data: string) {
-	return new Promise((resolve, reject) => {
-		fs.writeFile(filepath, data, (err) => {
-			if (err) {
-				return reject(err);
-			}
+export function mockupDocument(text: string): TextDocument {
+	const lines = text.split('\n');
 
-			resolve();
-		});
-	});
+	return <any>{
+		lineCount: lines.length,
+		lineAt: (line: number) => ({ lineNumber: line, text: lines[line] }),
+		positionAt: (offset: number) => new Position(0, offset),
+		getText: () => text
+	};
 }
