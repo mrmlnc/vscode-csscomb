@@ -47,8 +47,8 @@ export function activate(context: vscode.ExtensionContext) {
 
 		const provider = getProvider(document, selection, workspace, filepath, settings);
 
-		if (!process) {
-			return showOutput(`We do not support ${document.languageId} syntax.`);
+		if (!provider) {
+			return showOutput(`We do not support "${document.languageId}" syntax.`);
 		}
 
 		provider.format().then((blocks) => {
