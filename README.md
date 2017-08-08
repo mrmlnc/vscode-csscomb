@@ -1,6 +1,14 @@
 # vscode-csscomb
 
-> VS Code plugin for [CSScomb](http://csscomb.com/) — CSS coding style formatter
+> VS Code plugin for [CSScomb](http://csscomb.com/) — CSS coding style formatter.
+
+## Donate
+
+If you want to thank me, or promote your Issue.
+
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/mrmlnc)
+
+> Sorry, but I have work and support for plugins and modules requires some time after work. I will be glad of your support or PR's.
 
 ## Install
 
@@ -15,10 +23,8 @@ Press <kbd>F1</kbd> and run the command named `CSSComb`.
 
 ## Supported languages
 
-  * CSS
-  * Less
-  * SCSS
-  * Sass
+  * Styles: CSS, Less, Sass, SCSS
+  * Styles inside `<style>` or `<style lang="LANGUAGE">` tags: HTML, Vue
 
 ## Supported settings
 
@@ -27,7 +33,7 @@ Press <kbd>F1</kbd> and run the command named `CSSComb`.
   * Type: `Object` or `String`
   * Defaut: `{}`
 
-Config's name. Should be one of the following: `csscomb`, `zen`, `yandex` or an object containing custom configuration or path to config.
+Config's name. Should be one of the following: `csscomb`, `zen`, `yandex` or an object containing custom configuration or path to config. You can use http://csscomb.com/config to easily generate a config file.
 
 > **Warning!**
 >
@@ -47,13 +53,6 @@ Auto format on save.
   * Example: `["variables.less", "mixins/**/*"]`
 
 An optional array of glob-patterns to ignore files on save.
-
-**csscomb.useLatestCore**
-
-  * Type: `Boolean`
-  * Default: `false`
-
-Use CSScomb **v4.0.0** [see](https://github.com/csscomb/csscomb.js/blob/dev/CHANGELOG.md#400---2017-02-16) as [fork without `babel-polyfill`](https://github.com/mrmlnc/csscomb.js/tree/vscode).
 
 For example:
 
@@ -81,14 +80,16 @@ For changes keyboard shortcuts, create a new rule in `File -> Preferences -> Key
 
 ## Custom configuration
 
+We support the following configs:
+
+  * `.csscomb.json` or `csscomb.json`
+  * `.csscomb.js` or `csscomb.js`
+  * Path in the `CSSCOMB_CONFIG` env variable
+  * Config in the `csscombConfig` field in the `package.json` file
+
 Custom configuration is fun and simple: just put `.csscomb.json` file in the project root or your `HOME` directory.
 
 You can read more about available options [in docs](https://github.com/csscomb/csscomb.js/blob/master/doc/options.md).
-
-## How to run tests?
-
-  * Close all instances of VS Code
-  * Run `npm run build` command
 
 ## Changelog
 
