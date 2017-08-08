@@ -80,7 +80,8 @@ export default class EmbeddedProvider extends BaseProvider {
 					syntax,
 					content,
 					range: new vscode.Range(start, end),
-					error: null
+					error: null,
+					changed: false
 				});
 
 				pos += 8;
@@ -99,7 +100,7 @@ export default class EmbeddedProvider extends BaseProvider {
 			const lines = block.content.split(/\r?\n/);
 
 			const indent = lines[0].match(/^([\s]*)/g);
-			if (!indent) {
+			if (!indent || !block.changed) {
 				return;
 			}
 

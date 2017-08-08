@@ -25,6 +25,7 @@ export interface IStyleBlock {
 	syntax: string;
 	content: string;
 	error: string;
+	changed: boolean;
 }
 
 /**

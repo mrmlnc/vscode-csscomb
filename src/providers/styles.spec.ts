@@ -42,7 +42,8 @@ describe('Providers → Styles', () => {
 				end: { line: 4, character: 1 }
 			},
 			content: '.text\n{\n    & > .nested\n    {\n        content: \'\';\n    }\n}\n',
-			error: null
+			error: null,
+			changed: true
 		}];
 
 		const actual = await provider.format();

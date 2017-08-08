@@ -54,7 +54,8 @@ describe('Providers → Embedded', () => {
 					start: { line: 0, character: 40 },
 					end: { line: 0, character: 105 }
 				},
-				error: null
+				error: null,
+				changed: true
 			},
 			{
 				syntax: 'css',
@@ -63,7 +64,8 @@ describe('Providers → Embedded', () => {
 					start: { line: 0, character: 149 },
 					end: { line: 0, character: 177 }
 				},
-				error: null
+				error: null,
+				changed: true
 			}
 		];
 

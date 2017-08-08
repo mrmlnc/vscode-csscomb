@@ -11,7 +11,7 @@ class TestBaseProvider extends BaseProvider {
 
 	public getBlocks(): IStyleBlock[] {
 		return [
-			{ syntax: 'css', content: '.text { content: "" }', range: null, error: null }
+			{ syntax: 'css', content: '.text { content: "" }', range: null, error: null, changed: false }
 		];
 	}
 }
@@ -38,7 +38,8 @@ describe('Providers → Base', () => {
 			syntax: 'css',
 			range: null,
 			content: '.text\n{\n    content: \'\';\n}\n',
-			error: null
+			error: null,
+			changed: true
 		}];
 
 		const actual = await provider.format();

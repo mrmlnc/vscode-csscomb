@@ -53,7 +53,12 @@ export default class BaseProvider {
 			const syntax = blocks[i].syntax;
 
 			try {
-				blocks[i].content = await csscomb.use(this.filepath, text, syntax, config);
+				const changes = await csscomb.use(this.filepath, text, syntax, config);
+
+				if (changes !== blocks[i].content) {
+					blocks[i].content = changes;
+					blocks[i].changed = true;
+				}
 			} catch (err) {
 				blocks[i].error = err;
 			}
