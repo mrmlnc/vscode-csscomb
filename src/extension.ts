@@ -94,7 +94,13 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 
 		const actions = provider.format().then((blocks) => {
-			return blocks.map((block) => vscode.TextEdit.replace(block.range, block.content));
+			return blocks.map((block) => {
+				if (block.error) {
+					showOutput(block.error.toString());
+				}
+
+				return vscode.TextEdit.replace(block.range, block.content);
+			});
 		}).catch((err: Error) => showOutput(err.stack));
 
 		event.waitUntil(actions);
