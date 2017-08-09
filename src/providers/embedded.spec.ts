@@ -38,7 +38,10 @@ describe('Providers → Embedded', () => {
 
 	const document = testUtils.mockupDocument(text);
 	const provider: EmbeddedProvider = new Provider(document, 'html', null, '.tmp/test.html', {
-		preset: 'csscomb'
+		preset: 'csscomb',
+		syntaxAssociations: {
+			less: 'scss'
+		}
 	});
 
 	it('should return true for supported syntax', () => {
@@ -48,7 +51,7 @@ describe('Providers → Embedded', () => {
 	it('should return formated content', async () => {
 		const expected: IStyleBlock[] = <any>[
 			{
-				syntax: 'less',
+				syntax: 'scss',
 				content: '    .test\n    {\n        & > .nested\n        {\n            content: \'\';\n        }\n    }\n',
 				range: {
 					start: { line: 0, character: 40 },

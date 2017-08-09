@@ -50,7 +50,7 @@ export default class EmbeddedProvider extends BaseProvider {
 				// We trying support language's defined in the style tag
 				const matchedSyntax = tag.match(/lang=['"](.+)?['"]/);
 
-				syntax = matchedSyntax ? matchedSyntax[1] : 'css';
+				syntax = this.getSyntax(matchedSyntax ? matchedSyntax[1] : 'css');
 
 				blockStartIndex = pos + 1;
 			}

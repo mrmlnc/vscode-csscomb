@@ -72,4 +72,10 @@ export default class BaseProvider {
 
 		return configProfiler.getConfig(this.filepath, { settings: this.settings.preset });
 	}
+
+	public getSyntax(syntax: string): string {
+		const syntaxAssociation = this.settings.syntaxAssociations[syntax];
+
+		return syntaxAssociation || syntax;
+	}
 }

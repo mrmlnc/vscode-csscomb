@@ -27,7 +27,8 @@ describe('Providers → Styles', () => {
 
 	const document = testUtils.mockupDocument(text);
 	const provider: StylesProvider = new Provider(document, null, 'scss', null, '.tmp/test.scss', {
-		preset: 'csscomb'
+		preset: 'csscomb',
+		syntaxAssociations: {}
 	});
 
 	it('should return true for supported syntax', () => {

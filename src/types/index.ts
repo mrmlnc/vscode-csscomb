@@ -15,6 +15,7 @@ export interface IPluginSettings {
 	ignoreFilesOnSave?: boolean;
 	supportEmbeddedStyles?: boolean;
 	formatOnSave?: boolean;
+	syntaxAssociations?: Record<string, string>;
 }
 
 /**

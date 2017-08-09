@@ -17,7 +17,10 @@ class TestBaseProvider extends BaseProvider {
 }
 
 describe('Providers → Base', () => {
-	const provider = new TestBaseProvider(null, null, 'css', { preset: 'csscomb' });
+	const provider = new TestBaseProvider(null, null, 'css', {
+		preset: 'csscomb',
+		syntaxAssociations: {}
+	});
 
 	it('should create instance', () => {
 		assert.ok(provider instanceof BaseProvider);
