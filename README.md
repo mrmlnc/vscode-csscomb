@@ -26,6 +26,8 @@ Press <kbd>F1</kbd> and run the command named `CSSComb`.
   * Styles: CSS, Less, Sass, SCSS
   * Styles inside `<style>` or `<style lang="LANGUAGE">` tags: HTML, Vue
 
+    > ⚠️ The plugin does not support formatting when saving template files (HTML, Vue) by `formatOnSave` option and formatting of the selected fragments (selections).
+
 ## Supported settings
 
 **csscomb.preset**
