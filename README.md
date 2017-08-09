@@ -30,7 +30,7 @@ Press <kbd>F1</kbd> and run the command named `CSSComb`.
 
 ## Supported settings
 
-**csscomb.preset**
+#### csscomb.preset
 
   * Type: `Object` or `String`
   * Defaut: `{}`
@@ -41,20 +41,42 @@ Config's name. Should be one of the following: `csscomb`, `zen`, `yandex` or an 
 >
 > If you want to specify a file in the current directory, the path must begin with a `./` or `../` if relative to the current directory. Also you can use HOME directory as `~` symbol.
 
-**csscomb.formatOnSave**
-
-  * Type: `Boolean`
-  * Default: `false`
-
-Auto format on save.
-
-**csscomb.ignoreFilesOnSave**
+#### csscomb.ignoreFilesOnSave
 
   * Type: `Array`
   * Default: `[]`
   * Example: `["variables.less", "mixins/**/*"]`
 
 An optional array of glob-patterns to ignore files on save.
+
+#### csscomb.supportEmbeddedStyles
+
+  * Type: `Boolean`
+  * Default: `true`
+
+Support embedded CSS into HTML.
+
+#### csscomb.formatOnSave
+
+  * Type: `Boolean`
+  * Default: `false`
+
+Auto format on save.
+
+#### csscomb.syntaxAssociations
+
+  * Type: `Object`
+  * Default: `{}`
+
+Configuration of syntax associations.
+
+```json
+{
+	"csscomb.syntaxAssociations": {
+		"postcss": "scss
+	}
+}
+```
 
 For example:
 
