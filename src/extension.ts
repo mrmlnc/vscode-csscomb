@@ -41,9 +41,10 @@ export function activate(context: vscode.ExtensionContext) {
 	const onCommand = vscode.commands.registerTextEditorCommand('csscomb.execute', (textEditor) => {
 		const document = textEditor.document;
 		const selection = textEditor.selection;
-		const workspace = vscode.workspace.rootPath;
 		const filepath = document.uri.fsPath;
-		const settings = vscode.workspace.getConfiguration().get<IPluginSettings>('csscomb');
+		const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
+		const workspace = workspaceFolder.uri.fsPath;
+		const settings = vscode.workspace.getConfiguration('csscomb', workspaceFolder.uri) as IPluginSettings;
 
 		const provider = getProvider(document, selection, workspace, filepath, settings);
 
@@ -66,9 +67,10 @@ export function activate(context: vscode.ExtensionContext) {
 
 	const onSave = vscode.workspace.onWillSaveTextDocument((event) => {
 		const document = event.document;
-		const workspace = vscode.workspace.rootPath;
 		const filepath = document.uri.fsPath;
-		const settings = vscode.workspace.getConfiguration().get<IPluginSettings>('csscomb');
+		const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
+		const workspace = workspaceFolder.uri.fsPath;
+		const settings = vscode.workspace.getConfiguration('csscomb', workspaceFolder.uri) as IPluginSettings;
 
 		// Skip files without providers
 		const provider = getProvider(document, null, workspace, filepath, settings);

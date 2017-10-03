@@ -6,7 +6,7 @@
   "publisher": "mrmlnc",
   "license": "MIT",
   "engines": {
-    "vscode": "^1.13.0"
+    "vscode": "^1.15.0"
   },
   "icon": "icon.png",
   "author": {
@@ -54,27 +54,32 @@
             "string"
           ],
           "default": {},
-          "description": "One of the predefined configs (csscomb, yandex, zen) or custom config (object) or path to config."
+          "description": "One of the predefined configs (csscomb, yandex, zen) or custom config (object) or path to config.",
+          "scope": "resource"
         },
         "csscomb.ignoreFilesOnSave": {
           "type": "array",
           "default": [],
-          "description": "An optional array of glob-patterns to ignore files on save."
+          "description": "An optional array of glob-patterns to ignore files on save.",
+          "scope": "resource"
         },
         "csscomb.supportEmbeddedStyles": {
           "type": "boolean",
           "default": true,
-          "description": "Support embedded CSS into HTML."
+          "description": "Support embedded CSS into HTML.",
+          "scope": "resource"
         },
         "csscomb.formatOnSave": {
           "type": "boolean",
           "default": false,
-          "description": "Auto format on save."
+          "description": "Auto format on save.",
+          "scope": "resource"
         },
         "csscomb.syntaxAssociations": {
           "type": "object",
           "default": {},
-          "description": "Configuration of syntax associations."
+          "description": "Configuration of syntax associations.",
+          "scope": "resource"
         }
       }
     },
