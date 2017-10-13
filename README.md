@@ -73,7 +73,7 @@ Configuration of syntax associations.
 ```json
 {
 	"csscomb.syntaxAssociations": {
-		"postcss": "scss
+		"postcss": "scss"
 	}
 }
 ```
