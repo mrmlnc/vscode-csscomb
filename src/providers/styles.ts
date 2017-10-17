@@ -6,9 +6,9 @@ import { IPluginSettings, IStyleBlock } from '../types';
 
 export default class StylesProvider extends BaseProvider {
 	constructor(
-		private document: vscode.TextDocument,
-		private selection: vscode.Selection,
-		public syntax: string,
+		private readonly document: vscode.TextDocument,
+		private readonly selection: vscode.Selection,
+		public readonly syntax: string,
 		workspace: string, filepath: string, settings: IPluginSettings
 	) {
 		super(workspace, filepath, syntax, settings);

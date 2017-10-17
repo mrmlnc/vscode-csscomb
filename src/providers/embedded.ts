@@ -12,8 +12,8 @@ export interface IStyleBlock {
 
 export default class EmbeddedProvider extends BaseProvider {
 	constructor(
-		private document: vscode.TextDocument,
-		public syntax: string,
+		private readonly document: vscode.TextDocument,
+		public readonly syntax: string,
 		workspace: string, filepath: string, settings: IPluginSettings
 	) {
 		super(workspace, filepath, syntax, settings);
