@@ -39,12 +39,19 @@ function getProvider(document: vscode.TextDocument, selection: vscode.Selection,
 
 export function activate(context: vscode.ExtensionContext) {
 	const onCommand = vscode.commands.registerTextEditorCommand('csscomb.execute', (textEditor) => {
+		// Prevent run command without active TextEditor
+		if (!vscode.window.activeTextEditor) {
+			return null;
+		}
+
 		const document = textEditor.document;
 		const selection = textEditor.selection;
 		const filepath = document.uri.fsPath;
 		const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
-		const workspace = workspaceFolder.uri.fsPath;
-		const settings = vscode.workspace.getConfiguration('csscomb', workspaceFolder.uri) as IPluginSettings;
+		// Use workspace directory or filepath of current file as workspace folder
+		const workspace = workspaceFolder ? workspaceFolder.uri.fsPath : filepath;
+		const workspaceUri = workspaceFolder ? workspaceFolder.uri : null;
+		const settings = vscode.workspace.getConfiguration('csscomb', workspaceUri) as IPluginSettings;
 
 		const provider = getProvider(document, selection, workspace, filepath, settings);
 
@@ -66,11 +73,18 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	const onSave = vscode.workspace.onWillSaveTextDocument((event) => {
+		// Prevent run command without active TextEditor
+		if (!vscode.window.activeTextEditor) {
+			return null;
+		}
+
 		const document = event.document;
 		const filepath = document.uri.fsPath;
 		const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
-		const workspace = workspaceFolder.uri.fsPath;
-		const settings = vscode.workspace.getConfiguration('csscomb', workspaceFolder.uri) as IPluginSettings;
+		// Use workspace directory or filepath of current file as workspace folder
+		const workspace = workspaceFolder ? workspaceFolder.uri.fsPath : filepath;
+		const workspaceUri = workspaceFolder ? workspaceFolder.uri : null;
+		const settings = vscode.workspace.getConfiguration('csscomb', workspaceUri) as IPluginSettings;
 
 		// Skip files without providers
 		const provider = getProvider(document, null, workspace, filepath, settings);
