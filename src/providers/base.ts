@@ -21,10 +21,10 @@ const configProfiler = new ConfigProfiler(null, {
 
 export default class BaseProvider {
 	constructor(
-		private workspace: string,
-		private filepath: string,
-		public syntax: string,
-		private settings: IPluginSettings
+		private readonly workspace: string,
+		private readonly filepath: string,
+		public readonly syntax: string,
+		private readonly settings: IPluginSettings
 	) { }
 
 	public supportedSyntaxes(): string[] {
