@@ -36,7 +36,9 @@ export default class BaseProvider {
 	}
 
 	public isApplycable(): boolean {
-		return this.supportedSyntaxes().indexOf(this.syntax) !== -1;
+		const syntax: string = this.getSyntax(this.syntax);
+
+		return this.supportedSyntaxes().indexOf(syntax) !== -1;
 	}
 
 	public async format(): Promise<IStyleBlock[]> {
@@ -74,8 +76,6 @@ export default class BaseProvider {
 	}
 
 	public getSyntax(syntax: string): string {
-		const syntaxAssociation = this.settings.syntaxAssociations[syntax];
-
-		return syntaxAssociation || syntax;
+		return this.settings.syntaxAssociations[syntax] || syntax;
 	}
 }

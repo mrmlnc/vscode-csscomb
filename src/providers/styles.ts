@@ -30,7 +30,9 @@ export default class StylesProvider extends BaseProvider {
 			content = this.document.getText(range);
 		}
 
-		return [{ syntax: this.syntax, range, content, error: null, changed: false }];
+		const syntax: string = this.getSyntax(this.syntax);
+
+		return [{ syntax, range, content, error: null, changed: false }];
 	}
 
 	public supportedSyntaxes(): string[] {
