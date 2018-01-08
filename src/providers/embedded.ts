@@ -59,14 +59,11 @@ export default class EmbeddedProvider extends BaseProvider {
 			if (char === '<' && text.substr(pos, 8) === '</style>') {
 				// Find first newline symbol for the current style tag
 				let previous = pos;
-				let indent = '';
 
 				do {
 					char = text.charAt(previous);
 
 					previous--;
-
-					indent += char;
 				} while (char !== '\n' && previous >= 0);
 
 				const blockEndIndex = pos - (pos - previous - 1);
