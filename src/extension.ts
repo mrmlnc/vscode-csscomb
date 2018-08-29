@@ -110,12 +110,13 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 
 		const actions = provider.format().then((blocks) => {
-			return blocks.map((block) => {
-				if (block.error) {
-					showOutput(block.error.toString());
-				}
-
-				return vscode.TextEdit.replace(block.range, block.content);
+			vscode.window.activeTextEditor.edit((builder) => {
+				blocks.forEach((block) => {
+					if (block.error) {
+						showOutput(block.error.toString());
+					}
+					builder.replace(block.range, block.content);
+				});
 			});
 		}).catch((err: Error) => showOutput(err.stack));
 
