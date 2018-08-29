@@ -24,6 +24,19 @@ function showOutput(msg: string): void {
 	output.show();
 }
 
+function formatEditor(editor:vscode.TextEditor, provider:EmbeddedProvider|StylesProvider):Promise<void> {
+	return provider.format().then((blocks) => {
+		editor.edit((builder) => {
+			blocks.forEach((block) => {
+				if (block.error) {
+					showOutput(block.error.toString());
+				}
+				builder.replace(block.range, block.content);
+			});
+		});
+	}).catch((err: Error) => showOutput(err.stack));
+}
+
 function getProvider(document: vscode.TextDocument, selection: vscode.Selection, workspace: string, filepath: string, settings: IPluginSettings) {
 	const stylesProvider = new StylesProvider(document, selection, document.languageId, workspace, filepath, settings);
 	const embeddedProvider = new EmbeddedProvider(document, document.languageId, workspace, filepath, settings);
@@ -59,17 +72,7 @@ export function activate(context: vscode.ExtensionContext) {
 			return showOutput(`We do not support "${document.languageId}" syntax.`);
 		}
 
-		provider.format().then((blocks) => {
-			textEditor.edit((builder) => {
-				blocks.forEach((block) => {
-					if (block.error) {
-						showOutput(block.error.toString());
-					}
-
-					builder.replace(block.range, block.content);
-				});
-			});
-		}).catch((err: Error) => showOutput(err.stack));
+		formatEditor(textEditor, provider);
 	});
 
 	const onSave = vscode.workspace.onWillSaveTextDocument((event) => {
@@ -108,17 +111,7 @@ export function activate(context: vscode.ExtensionContext) {
 				return null;
 			}
 		}
-
-		const actions = provider.format().then((blocks) => {
-			vscode.window.activeTextEditor.edit((builder) => {
-				blocks.forEach((block) => {
-					if (block.error) {
-						showOutput(block.error.toString());
-					}
-					builder.replace(block.range, block.content);
-				});
-			});
-		}).catch((err: Error) => showOutput(err.stack));
+		const actions = formatEditor(vscode.window.activeTextEditor, provider);
 
 		event.waitUntil(actions);
 	});
