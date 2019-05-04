@@ -100,14 +100,14 @@
     "rimraf": "^2.6.2",
     "tslint": "^5.7.0",
     "tslint-config-xo": "^1.3.0",
-    "typescript": "^2.5.3"
+    "typescript": "^2.5.3",
+    "vscode": "^1.1.5"
   },
   "dependencies": {
     "config-profiler": "^2.0.3",
     "csscomb": "^4.2.0",
     "micromatch": "^3.1.0",
-    "tslib": "^1.7.1",
-    "vscode": "^1.1.5"
+    "tslib": "^1.7.1"
   },
   "scripts": {
     "postinstall": "node ./node_modules/vscode/bin/install",
