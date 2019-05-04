@@ -6,7 +6,7 @@ import * as micromatch from 'micromatch';
 import StylesProvider from './providers/styles';
 import EmbeddedProvider from './providers/embedded';
 
-import { IPluginSettings } from './types';
+import { IPluginSettings, IStyleBlock } from './types';
 
 let output: vscode.OutputChannel;
 
@@ -22,6 +22,19 @@ function showOutput(msg: string): void {
 	output.appendLine('[CSSComb]\n');
 	output.append(msg);
 	output.show();
+}
+
+function formatEditor(editor:vscode.TextEditor, provider:EmbeddedProvider|StylesProvider):Promise<void> {
+	return provider.format().then((blocks) => {
+		editor.edit((builder) => {
+			blocks.forEach((block) => {
+				if (block.error) {
+					showOutput(block.error.toString());
+				}
+				builder.replace(block.range, block.content);
+			});
+		});
+	}).catch((err: Error) => showOutput(err.stack));
 }
 
 function getProvider(document: vscode.TextDocument, selection: vscode.Selection, workspace: string, filepath: string, settings: IPluginSettings) {
@@ -59,17 +72,7 @@ export function activate(context: vscode.ExtensionContext) {
 			return showOutput(`We do not support "${document.languageId}" syntax.`);
 		}
 
-		provider.format().then((blocks) => {
-			textEditor.edit((builder) => {
-				blocks.forEach((block) => {
-					if (block.error) {
-						showOutput(block.error.toString());
-					}
-
-					builder.replace(block.range, block.content);
-				});
-			});
-		}).catch((err: Error) => showOutput(err.stack));
+		formatEditor(textEditor, provider);
 	});
 
 	const onSave = vscode.workspace.onWillSaveTextDocument((event) => {
@@ -109,16 +112,22 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 		}
 
-		const actions = provider.format().then((blocks) => {
-			return blocks.map((block) => {
-				if (block.error) {
-					showOutput(block.error.toString());
-				}
+		let actions;
+		const editor:vscode.TextEditor = vscode.window.visibleTextEditors.find( editor => editor.document == document);
 
-				return vscode.TextEdit.replace(block.range, block.content);
-			});
-		}).catch((err: Error) => showOutput(err.stack));
-
+		if ( editor ) {
+			actions = formatEditor(editor, provider);
+		}
+		else {
+			actions = provider.format().then((blocks: IStyleBlock[]) => {
+				return blocks.map((block) => {
+					if (block.error) {
+						showOutput(block.error.toString());
+					}
+					return vscode.TextEdit.replace(block.range, block.content);
+				});
+			}).catch((err: Error) => showOutput(err.stack));
+		}
 		event.waitUntil(actions);
 	});
 
