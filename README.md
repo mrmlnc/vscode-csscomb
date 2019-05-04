@@ -19,7 +19,8 @@ See the [extension installation guide](https://code.visualstudio.com/docs/editor
 
 ## Usage
 
-Press <kbd>F1</kbd> and run the command named `CSSComb`.
+1. Put a `cssconfig.json` in your project root, or set the config in the setting `csscomb.preset`. You can start with one of the [predefined configs](https://github.com/csscomb/csscomb.js/tree/dev/config) or [generate a config](http://csscomb.com/config). See details in [config docs](https://github.com/csscomb/csscomb.js/blob/dev/doc/configuration.md).
+1. Run `CSSComb` in the Command Palette (<kbd>F1</kbd>, <kbd>Ctrl+Shift+P</kbd> on Windows, <kbd>Cmd+Shift+P</kbd> on macOS).
 
 ## Supported languages
 
@@ -34,8 +35,9 @@ Press <kbd>F1</kbd> and run the command named `CSSComb`.
 
   * Type: `Object` or `String`
   * Defaut: `{}`
+  * Example: `'~/path/to/file/csscomb.json'` or `'csscomb'`
 
-Config's name. Should be one of the following: `csscomb`, `zen`, `yandex` or an object containing custom configuration or path to config. You can use http://csscomb.com/config to easily generate a config file.
+Config file. Can be built-in config (`csscomb`, `zen`, or `yandex`), path to a config file, or an object containing custom configuration. 
 
 > **Warning!**
 >
