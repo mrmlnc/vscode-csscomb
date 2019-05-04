@@ -24,7 +24,7 @@ function showOutput(msg: string): void {
 	output.show();
 }
 
-function formatEditor(editor:vscode.TextEditor, provider:EmbeddedProvider|StylesProvider):Promise<void> {
+function formatEditor(editor: vscode.TextEditor, provider: EmbeddedProvider | StylesProvider): Promise<void> {
 	return provider.format().then((blocks) => {
 		editor.edit((builder) => {
 			blocks.forEach((block) => {
@@ -113,12 +113,13 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 
 		let actions;
-		const editor:vscode.TextEditor = vscode.window.visibleTextEditors.find( editor => editor.document == document);
 
-		if ( editor ) {
-			actions = formatEditor(editor, provider);
-		}
-		else {
+		const visibleTextEditors = vscode.window.visibleTextEditors;
+		const currentEditor = visibleTextEditors.find((editor) => editor.document.fileName === document.fileName);
+
+		if (currentEditor) {
+			actions = formatEditor(currentEditor, provider);
+		} else {
 			actions = provider.format().then((blocks: IStyleBlock[]) => {
 				return blocks.map((block) => {
 					if (block.error) {
