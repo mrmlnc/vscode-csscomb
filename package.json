@@ -6,7 +6,7 @@
   "publisher": "mrmlnc",
   "license": "MIT",
   "engines": {
-    "vscode": "^1.16.0"
+    "vscode": "^1.36.0"
   },
   "icon": "icon.png",
   "author": {
