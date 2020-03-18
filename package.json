@@ -105,7 +105,7 @@
   },
   "dependencies": {
     "config-profiler": "2.0.3",
-    "csscomb": "4.3.0",
+    "csscomb": "csscomb/csscomb.js#1f27f9e4e0f6a9f0849b6fc6e8325baf9371aeaf",
     "micromatch": "3.1.10",
     "tslib": "1.10.0"
   },
