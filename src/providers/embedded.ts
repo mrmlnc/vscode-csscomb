@@ -114,6 +114,6 @@ export default class EmbeddedProvider extends BaseProvider {
 	}
 
 	public supportedSyntaxes(): string[] {
-		return ['html', 'htm', 'vue', 'vue-html'];
+		return ['html', 'htm', 'vue', 'vue-html', 'svelte'];
 	}
 }
