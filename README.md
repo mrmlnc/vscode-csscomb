@@ -25,9 +25,9 @@ See the [extension installation guide](https://code.visualstudio.com/docs/editor
 ## Supported languages
 
   * Styles: CSS, Less, Sass, SCSS
-  * Styles inside `<style>` or `<style lang="LANGUAGE">` tags: HTML, Vue
+  * Styles inside `<style>` or `<style lang="LANGUAGE">` tags: HTML, Vue, Svelte
 
-    > ⚠️ The plugin does not support formatting when saving template files (HTML, Vue) by `formatOnSave` option and formatting of the selected fragments (selections).
+    > ⚠️ The plugin does not support formatting when saving template files (HTML, Vue, Svelte) by `formatOnSave` option and formatting of the selected fragments (selections).
 
 ## Supported settings
 
