@@ -106,8 +106,8 @@
   "dependencies": {
     "config-profiler": "2.0.3",
     "csscomb": "4.3.0",
-    "micromatch": "3.1.10",
-    "tslib": "1.10.0"
+    "micromatch": "4.0.2",
+    "tslib": "1.11.1"
   },
   "scripts": {
     "postinstall": "node ./node_modules/vscode/bin/install",
