@@ -2,13 +2,11 @@
 
 > VS Code plugin for [CSScomb](http://csscomb.com/) — CSS coding style formatter.
 
-## Donate
+## Donation
 
-If you want to thank me, or promote your Issue.
+Do you like this project? Support it by donating, creating an issue or pull request.
 
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/mrmlnc)
-
-> Sorry, but I have work and support for plugins and modules requires some time after work. I will be glad of your support or PR's.
 
 ## Install
 
@@ -37,7 +35,7 @@ See the [extension installation guide](https://code.visualstudio.com/docs/editor
   * Defaut: `{}`
   * Example: `'~/path/to/file/csscomb.json'` or `'csscomb'`
 
-Config file. Can be built-in config (`csscomb`, `zen`, or `yandex`), path to a config file, or an object containing custom configuration. 
+Config file. Can be built-in config (`csscomb`, `zen`, or `yandex`), path to a config file, or an object containing custom configuration.
 
 > **Warning!**
 >
