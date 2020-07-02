@@ -11,3 +11,8 @@ tslint.json
 .vscode/**
 src/**
 smoke/**
+
+# csscomb submodule
+csscomb.js/**
+!csscomb.js/config
+!csscomb.js/lib
