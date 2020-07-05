@@ -114,7 +114,11 @@
     "lint": "tslint src/**/*.ts -p .",
     "compile": "tsc",
     "test": "mocha out/{,**/}*.spec.js -s 0",
-    "build": "npm run clean && npm run lint && npm run compile && npm test",
+    "csscomb:build": "cd ./csscomb.js && node ./node_modules/@babel/cli/bin/babel.js --plugins @babel/plugin-transform-destructuring --loose all src --out-dir lib",
+    "csscomb:prepare": "cd ./csscomb.js && npm ci --ignore-scripts",
+    "build:plugin": "npm run clean && npm run lint && npm run compile && npm test",
+    "build:csscomb": "npm run csscomb:prepare && npm run csscomb:build",
+    "build": "npm run build:csscomb && npm run build:plugin",
     "watch": "npm run clean && npm run lint && npm run compile -- --sourceMap --watch"
   }
 }
